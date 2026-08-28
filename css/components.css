@@ -21,6 +21,10 @@
 
 @media (max-width: 768px) {
   .nav { height: var(--nav-height-mobile); }
+  .nav-links{ display:none !important }
+  .nav-logo{ font-size:1.05rem; gap:8px !important }
+  .nav-logo img{ height:28px !important; width:28px !important }
+  .nav-inner{ gap:12px }
 }
 
 .nav-inner {
