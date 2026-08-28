@@ -45,7 +45,10 @@ export function renderFooter() {
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Nails Studio — Hecho con detalle.</span>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span>© 2026 Nails Studio — Hecho con detalle.</span>
+          <span style="font-size:0.8125rem;color:var(--color-text-secondary)">Desarrollado por <a href="https://github.com/DanielDAAR" target="_blank" rel="noopener" style="font-weight:700;color:var(--color-accent);text-decoration:none">DanielSoftWorks</a> <span style="background:var(--color-text);color:#fff;padding:2px 6px;border-radius:4px;font-weight:700;font-size:0.6875rem;letter-spacing:0.06em;vertical-align:middle">DSW</span> — startup tecnológica</span>
+        </div>
         <span class="text-muted">Precios en MXN · <a href="https://www.instagram.com/dc_beauty_04/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Instagram</a> · <a href="https://maps.app.goo.gl/qezCBA5QgCTCMi9F9" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Maps</a></span>
       </div>
     </div>

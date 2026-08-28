@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin — Nails Studio</title>
-  <link rel="stylesheet" href="css/design-system.css">
-  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/css/components.css">
 </head>
 <body>
   <div id="login-view" class="login-container">
@@ -38,7 +38,7 @@
           <input class="input-field" id="password" type="password" required>
         </div>
         <button type="submit" class="btn btn-primary login-btn w-full">Entrar</button>
-        <a href="index.html" class="btn btn-ghost w-full">← Volver al sitio</a>
+        <a href="/index.html" class="btn btn-ghost w-full">← Volver al sitio</a>
       </form>
     </div>
   </div>
@@ -166,11 +166,11 @@
   </div>
 
   <script type="module">
-    import { CONFIG, isSupabaseConfigured, saveSupabaseConfig } from './js/config.js';
-    import { getSupabase } from './js/supabase.js';
-    import { fetchAppointments, fetchCatalog, fetchMaterials, fetchBlockedSlots, updateAppointmentStatus, upsertBlockedSlot, MOCK_CATALOG, MOCK_MATERIALS, MOCK_BLOCKED } from './js/data.js';
-    import { formatPrice, formatDateLong } from './js/utils.js';
-    import { toast } from './js/components/toast.js';
+    import { CONFIG, isSupabaseConfigured, saveSupabaseConfig } from '/js/config.js';
+    import { getSupabase } from '/js/supabase.js';
+    import { fetchAppointments, fetchCatalog, fetchMaterials, fetchBlockedSlots, updateAppointmentStatus, upsertBlockedSlot, MOCK_CATALOG, MOCK_MATERIALS, MOCK_BLOCKED } from '/js/data.js';
+    import { formatPrice, formatDateLong } from '/js/utils.js';
+    import { toast } from '/js/components/toast.js';
 
     const loginView = document.getElementById('login-view');
     const appView = document.getElementById('app-view');
