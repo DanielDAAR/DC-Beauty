@@ -1,7 +1,7 @@
 export const CONFIG = {
   supabaseUrl: localStorage.getItem('supabase_url') || '',
   supabaseKey: localStorage.getItem('supabase_key') || '',
-  whatsappNumber: '5215512345678',
+  whatsappNumber: '523318906464',
   businessName: 'Estudio Nails',
   businessHours: { start: 9, end: 19, slotMinutes: 60 },
   currency: 'MXN'
