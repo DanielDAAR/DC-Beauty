@@ -1580,4 +1580,10 @@
   .calc-layout .summary.sheet-collapsed{ max-height:148px; overflow:hidden }
   .calc-layout .summary.sheet-collapsed .summary-lines{ display:none }
   .calc-layout{ padding-bottom:220px }
+  /* Mobile: respira, no amontonado — más aire, menos densidad */
+  .section{ padding:32px 0 }
+  .section-header{ margin-bottom:24px }
+  .catalog-grid{ gap:16px; padding-bottom:16px }
+  .catalog-grid .catalog-card{ flex:0 0 82vw; max-width:300px }
+  .hero{ padding-top:calc(var(--nav-height-mobile) + 24px); padding-bottom:32px }
 }

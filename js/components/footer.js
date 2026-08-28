@@ -6,7 +6,7 @@ export function renderFooter() {
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
-          <div class="footer-logo">Nails<span>.</span> Studio</div>
+          <div class="footer-logo">DC<span>.</span> Beauty</div>
           <p class="footer-description">Uñas con acabado de salón, diseño a tu medida y agenda sin fricción. Reserva en 30 segundos y confirma por WhatsApp.</p>
           <div style="display:flex;gap:var(--space-3);margin-top:var(--space-4)">
             <a href="https://www.instagram.com/dc_beauty_04/" target="_blank" rel="noopener" class="footer-social-link" aria-label="Instagram dc_beauty_04">
@@ -15,7 +15,7 @@ export function renderFooter() {
             <a href="https://wa.me/523318906464" target="_blank" rel="noopener" class="footer-social-link" aria-label="WhatsApp">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5a8.5 8.5 0 0 1 15.5-4.5z"/><path d="M8 11c1 2 3 4 5 5l1.5-1.5c.3-.3.7-.3 1 0l1.5 1.5c.3.3.3.7 0 1l-1 1c-.3.3-.7.4-1.1.3A11 11 0 0 1 8 8c-.1-.4 0-.8.3-1.1l1-1c.3-.3.7-.3 1 0l1.5 1.5c.3.3.3.7 0 1L10 10c.5 1 1 2 2 2z"/></svg>
             </a>
-            <a href="https://maps.app.goo.gl/qezCBA5QgCTCMi9F9" target="_blank" rel="noopener" class="footer-social-link" aria-label="Google Maps">
+            <a href="https://maps.app.goo.gl/h1KLs9VuexWTUZNF9" target="_blank" rel="noopener" class="footer-social-link" aria-label="Google Maps">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
             </a>
           </div>
@@ -36,7 +36,7 @@ export function renderFooter() {
             <li><span class="footer-link">Dom cerrado</span></li>
             <li><span class="footer-link">Emiliano Zapata 82, Centro</span></li>
             <li><span class="footer-link">48970 Cihuatlán, Jal.</span></li>
-            <li><a class="footer-link" href="https://maps.app.goo.gl/qezCBA5QgCTCMi9F9" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg> Ver en Google Maps</a></li>
+            <li><a class="footer-link" href="https://maps.app.goo.gl/h1KLs9VuexWTUZNF9" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg> Ver en Google Maps</a></li>
           </ul>
         </div>
         <div>
@@ -48,10 +48,10 @@ export function renderFooter() {
       </div>
       <div class="footer-bottom">
         <div style="display:flex;flex-direction:column;gap:4px">
-          <span>© 2026 Nails Studio — Hecho con detalle.</span>
+          <span>© 2026 DC Beauty — Hecho con detalle.</span>
           <span style="font-size:0.8125rem;color:var(--color-text-secondary)">Desarrollado por <a href="https://github.com/DanielDAAR" target="_blank" rel="noopener" style="font-weight:700;color:var(--color-accent);text-decoration:none">DanielSoftWorks</a> <span style="background:var(--color-text);color:#fff;padding:2px 6px;border-radius:4px;font-weight:700;font-size:0.6875rem;letter-spacing:0.06em;vertical-align:middle">DSW</span> — startup tecnológica</span>
         </div>
-        <span class="text-muted">Precios en MXN · <a href="https://www.instagram.com/dc_beauty_04/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Instagram</a> · <a href="https://maps.app.goo.gl/qezCBA5QgCTCMi9F9" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Maps</a></span>
+        <span class="text-muted">Precios en MXN · <a href="https://www.instagram.com/dc_beauty_04/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Instagram</a> · <a href="https://maps.app.goo.gl/h1KLs9VuexWTUZNF9" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Maps</a></span>
       </div>
     </div>
   </footer>`;
