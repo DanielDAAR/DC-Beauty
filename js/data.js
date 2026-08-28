@@ -30,14 +30,21 @@ export const MOCK_MATERIALS = [
 ];
 
 export const MOCK_CATALOG = [
-  { id:'1', nombre:'Rouge Classique', imagen_url:'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80', tecnica:'Gel semipermanente', color:'Rojo Laca', precio_desde:380, activo:true, ocasion:'fiesta', tags:['clásico','elegante'] },
-  { id:'2', nombre:'Milky French', imagen_url:'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600&q=80', tecnica:'Soft Gel', color:'Blanco Leche', precio_desde:450, activo:true, ocasion:'diario', tags:['minimal'] },
-  { id:'3', nombre:'Sage Minimal', imagen_url:'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=600&q=80', tecnica:'Acrílico', color:'Verde Sage', precio_desde:480, activo:true, ocasion:'diario', tags:['minimal'] },
-  { id:'4', nombre:'Champagne Gold', imagen_url:'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80', tecnica:'Polygel', color:'Dorado Champagne', precio_desde:520, activo:true, ocasion:'novia', tags:['fiesta'] },
-  { id:'5', nombre:'Nude Rosé Gloss', imagen_url:'https://images.unsplash.com/photo-1632345031435-8727f21d122f?w=600&q=80', tecnica:'Gel semipermanente', color:'Nude Rosé', precio_desde:350, activo:true, ocasion:'oficina', tags:['natural'] },
-  { id:'6', nombre:'Midnight Black', imagen_url:'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80', tecnica:'Acrílico', color:'Negro Azabache', precio_desde:470, activo:true, ocasion:'fiesta', tags:['dramático'] },
-  { id:'7', nombre:'Lavanda Dream', imagen_url:'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600&q=80', tecnica:'Soft Gel', color:'Lila Lavanda', precio_desde:490, activo:true, ocasion:'diario', tags:['pastel'] },
-  { id:'8', nombre:'Pink Aurora', imagen_url:'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80', tecnica:'Gel semipermanente', color:'Rosa Pastel', precio_desde:430, activo:true, ocasion:'fiesta', tags:['aurora'] },
+  { id:'1', nombre:'Acrílico Nude Clásico', imagen_url:'fotos/SaveClip.App_491036120_18010025165732768_399971174939827291_n.jpg', tecnica:'Acrílico', color:'Nude Rosé', precio_desde:240, activo:true, ocasion:'diario', tags:['natural'] },
+  { id:'2', nombre:'Francés Baby Boomer', imagen_url:'fotos/SaveClip.App_491461284_18010025201732768_1532658404636573176_n.jpg', tecnica:'Acrílico', color:'Blanco Leche', precio_desde:250, activo:true, ocasion:'novia', tags:['elegante'] },
+  { id:'3', nombre:'Aurora Cristal', imagen_url:'fotos/SaveClip.App_491461922_18010025189732768_7860489324175486795_n.jpg', tecnica:'Acrílico', color:'Rosa Pastel', precio_desde:280, activo:true, ocasion:'fiesta', tags:['aurora'] },
+  { id:'4', nombre:'Espejo Champagne', imagen_url:'fotos/SaveClip.App_491933496_18010025186732768_3183738595868043797_n.jpg', tecnica:'Acrílico', color:'Dorado Champagne', precio_desde:310, activo:true, ocasion:'fiesta', tags:['glam'] },
+  { id:'5', nombre:'Diseño Suéter Mate', imagen_url:'fotos/SaveClip.App_557411869_18029138180732768_6379074342769458672_n.jpg', tecnica:'Acrílico', color:'Nude Rosé', precio_desde:345, activo:true, ocasion:'diario', tags:['invierno'] },
+  { id:'6', nombre:'Gel Natural Corto', imagen_url:'fotos/SaveClip.App_607693935_18038861234732768_6481186387095933816_n.jpg', tecnica:'Gel semipermanente manos', color:'Nude Rosé', precio_desde:260, activo:true, ocasion:'oficina', tags:['minimal'] },
+  { id:'7', nombre:'Acripie Pedicura', imagen_url:'fotos/SaveClip.App_623961014_18070206995537587_6619139069923772693_n.jpg', tecnica:'Acripie', color:'Rosa Pastel', precio_desde:280, activo:true, ocasion:'diario', tags:['pies'] },
+  { id:'8', nombre:'Encapsulado Flores', imagen_url:'fotos/SaveClip.App_655252719_18048974927732768_2187907988791205266_n.jpg', tecnica:'Acrílico', color:'Blanco Leche', precio_desde:380, activo:true, ocasion:'fiesta', tags:['flores'] },
+  { id:'9', nombre:'Nail Art Detallado', imagen_url:'fotos/SaveClip.App_727465684_18061761638732768_1475725806477374729_n.jpg', tecnica:'Acrílico', color:'Rojo Laca', precio_desde:420, activo:true, ocasion:'fiesta', tags:['arte'] },
+  { id:'10', nombre:'Frances Color', imagen_url:'fotos/SaveClip.App_731624290_18063737174732768_5275067276058840589_n.jpg', tecnica:'Acrílico', color:'Blanco Leche', precio_desde:460, activo:true, ocasion:'elegante', tags:['frances'] },
+  { id:'11', nombre:'Cristal Figura', imagen_url:'fotos/SaveClip.App_732493920_18063196220732768_3189548422477645567_n.jpg', tecnica:'Acrílico', color:'Dorado Champagne', precio_desde:500, activo:true, ocasion:'fiesta', tags:['cristal'] },
+  { id:'12', nombre:'Baby Boomer Degradado', imagen_url:'fotos/SaveClip.App_734917949_18063196211732768_3756226628483569746_n.jpg', tecnica:'Acrílico', color:'Blanco Leche', precio_desde:540, activo:true, ocasion:'novia', tags:['degradado'] },
+  { id:'13', nombre:'Relieve 3D', imagen_url:'fotos/SaveClip.App_754375945_18066931859732768_2870214223150948015_n.jpg', tecnica:'Acrílico', color:'Nude Rosé', precio_desde:580, activo:true, ocasion:'fiesta', tags:['3d'] },
+  { id:'14', nombre:'Baño Acrílico Natural', imagen_url:'fotos/SaveClip.App_769363709_18069408482732768_767796136565071858_n.jpg', tecnica:'Baño de acrílico', color:'Nude Rosé', precio_desde:250, activo:true, ocasion:'diario', tags:['natural'] },
+  { id:'15', nombre:'Pies Gel Clásico', imagen_url:'fotos/SaveClip.App_774099431_18070398701732768_4180774078587959586_n.jpg', tecnica:'Pies gel', color:'Rojo Laca', precio_desde:280, activo:true, ocasion:'diario', tags:['pies'] },
 ];
 
 export let MOCK_APPOINTMENTS = [
