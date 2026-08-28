@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora — Nails Studio</title>
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Principal">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Nails<span>.</span> Studio</a>
+      <ul class="nav-links" role="list">
+        <li><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+        <li><a class="nav-link" href="calculadora.html">Calculadora</a></li>
+        <li><a class="nav-link" href="agendar.html">Agendar</a></li>
+      </ul>
+      <a href="agendar.html" class="btn btn-primary nav-cta">Reservar</a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </nav>
+  <div class="nav-mobile-menu"><ul class="nav-mobile-links"><li><a class="nav-mobile-link" href="catalogo.html">Catálogo</a></li><li><a class="nav-mobile-link" href="calculadora.html">Calculadora</a></li><li><a class="nav-mobile-link" href="agendar.html">Agendar</a></li></ul><a href="agendar.html" class="btn btn-primary nav-mobile-cta">Reservar cita</a></div>
+
+  <main style="padding-top:calc(var(--nav-height) + var(--space-10))">
+    <div class="container" style="max-width:900px">
+      <div class="section-header">
+        <h1 class="section-title">Calculadora</h1>
+        <p class="section-subtitle">Arma tu diseño paso a paso. El precio se recalcula en vivo desde la tabla de materiales.</p>
+      </div>
+
+      <div class="calculator-steps" role="tablist" aria-label="Pasos">
+        <div class="step-indicator active" data-step="1"><span class="step-indicator-number">1</span> Técnica</div>
+        <div class="step-indicator" data-step="2"><span class="step-indicator-number">2</span> Color</div>
+        <div class="step-indicator" data-step="3"><span class="step-indicator-number">3</span> Largo</div>
+        <div class="step-indicator" data-step="4"><span class="step-indicator-number">4</span> Extras</div>
+      </div>
+
+      <div id="step-1" class="calculator-step active">
+        <h3 class="text-lg font-semibold mb-4">1 · Elige la técnica base</h3>
+        <div id="tecnica-grid" class="option-grid"></div>
+      </div>
+
+      <div id="step-2" class="calculator-step">
+        <h3 class="text-lg font-semibold mb-2">2 · Elige el color</h3>
+        <p class="text-muted text-sm mb-6">Selector firma Apple — círculo grande de preview + fila de puntos. Toca un color.</p>
+        <div class="color-picker">
+          <div id="color-preview" class="color-picker-preview" style="background:#9B2542"></div>
+          <div id="color-swatches" class="color-picker-swatches"></div>
+          <div class="color-picker-info">
+            <div id="color-name" class="color-picker-name">Rojo Laca</div>
+            <div id="color-price" class="color-picker-price">+$0</div>
+          </div>
+        </div>
+        <div class="flex justify-between mt-8">
+          <button class="btn btn-secondary" data-prev="1">← Atrás</button>
+          <button class="btn btn-primary" data-next="3">Continuar →</button>
+        </div>
+      </div>
+
+      <div id="step-3" class="calculator-step">
+        <h3 class="text-lg font-semibold mb-4">3 · Largo de uña</h3>
+        <div id="largo-grid" class="option-grid"></div>
+        <div class="flex justify-between mt-8">
+          <button class="btn btn-secondary" data-prev="2">← Atrás</button>
+          <button class="btn btn-primary" data-next="4">Continuar →</button>
+        </div>
+      </div>
+
+      <div id="step-4" class="calculator-step">
+        <h3 class="text-lg font-semibold mb-2">4 · Extras (opcional, multi-selección)</h3>
+        <div id="extras-grid" class="option-grid"></div>
+        <div class="flex justify-between mt-8">
+          <button class="btn btn-secondary" data-prev="3">← Atrás</button>
+          <button id="btn-agendar" class="btn btn-accent btn-lg" disabled>Agendar con este precio →</button>
+        </div>
+        <p id="calc-hint" class="text-sm text-muted mt-3">Completa técnica, color y largo para agendar.</p>
+      </div>
+
+      <div class="calculator-summary">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-4)">
+          <h4 class="font-semibold">Resumen</h4>
+          <span id="summary-status" class="badge">Incompleto</span>
+        </div>
+        <div id="summary-rows"></div>
+        <div class="flex gap-3 mt-6">
+          <button id="btn-reset" class="btn btn-ghost">Limpiar</button>
+          <button id="btn-agendar-2" class="btn btn-primary" style="margin-left:auto" disabled>Agendar con este precio</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div data-footer></div>
+
+  <script type="module">
+    import { initNav } from './js/components/nav.js';
+    import { renderFooter } from './js/components/footer.js';
+    import { fetchMaterials } from './js/data.js';
+    import { formatPrice, saveCalcSelection, loadCalcSelection } from './js/utils.js';
+    import { toast } from './js/components/toast.js';
+
+    initNav('calculadora');
+    renderFooter();
+
+    const materials = await fetchMaterials();
+    const byCat = (c) => materials.filter(m=>m.categoria===c);
+
+    const state = {
+      tecnica: null,
+      color: null,
+      largo: null,
+      extras: [],
+    };
+
+    // precarga desde catálogo
+    const pre = loadCalcSelection();
+    if (pre) {
+      const t = byCat('tecnica').find(x=>x.nombre===pre.tecnica);
+      const col = byCat('color').find(x=>x.nombre===pre.color);
+      if (t) state.tecnica = t;
+      if (col) state.color = col;
+    }
+
+    // --- render técnicas ---
+    const tecnicaGrid = document.getElementById('tecnica-grid');
+    tecnicaGrid.innerHTML = byCat('tecnica').map(m=>`
+      <div class="option-card ${state.tecnica?.id===m.id?'selected':''}" data-id="${m.id}" tabindex="0" role="button" aria-pressed="${state.tecnica?.id===m.id}">
+        <div style="width:100%;height:100%;display:grid;place-items:center;background:var(--color-bg-secondary);font-weight:600">${m.nombre}</div>
+        <div class="option-card-label">${formatPrice(m.precio_base)}</div>
+      </div>
+    `).join('');
+    tecnicaGrid.querySelectorAll('.option-card').forEach(card=>{
+      const sel = ()=> {
+        state.tecnica = materials.find(x=>x.id===card.dataset.id);
+        tecnicaGrid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+        card.classList.add('selected');
+        update();
+        goTo(2);
+      };
+      card.addEventListener('click', sel);
+      card.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); sel(); }});
+    });
+
+    // --- colores (signature picker) ---
+    const colors = byCat('color');
+    if (!state.color) state.color = colors[0];
+    const swatches = document.getElementById('color-swatches');
+    const preview = document.getElementById('color-preview');
+    const cName = document.getElementById('color-name');
+    const cPrice = document.getElementById('color-price');
+    function renderColors(){
+      swatches.innerHTML = colors.map(c=>`
+        <button class="color-swatch ${state.color?.id===c.id?'selected':''}" data-id="${c.id}" aria-label="${c.nombre}" style="background:${c.color_hex || '#ddd'}" title="${c.nombre}"></button>
+      `).join('');
+      preview.style.background = state.color?.color_hex || '#F5F5F7';
+      cName.textContent = state.color?.nombre || '—';
+      cPrice.textContent = state.color ? (state.color.precio_base>0?`+${formatPrice(state.color.precio_base)}`:'+$0') : '';
+      swatches.querySelectorAll('.color-swatch').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          state.color = materials.find(x=>x.id===b.dataset.id);
+          renderColors(); update();
+        });
+      });
+    }
+    renderColors();
+
+    // --- largo ---
+    const largoGrid = document.getElementById('largo-grid');
+    function renderLargo(){
+      largoGrid.innerHTML = byCat('largo').map(m=>`
+        <div class="option-card ${state.largo?.id===m.id?'selected':''}" data-id="${m.id}" tabindex="0" role="button" aria-pressed="${state.largo?.id===m.id}">
+          <div style="width:100%;height:100%;display:grid;place-items:center;background:var(--color-bg-secondary);">
+            <span style="font-size:2rem">${m.nombre==='Cortas'?'▁':m.nombre==='Medianas'?'▃':m.nombre==='Largas'?'▅':'▇'}</span>
+          </div>
+          <div class="option-card-label">${m.nombre} · ${formatPrice(m.precio_base)}</div>
+        </div>
+      `).join('');
+      largoGrid.querySelectorAll('.option-card').forEach(card=>{
+        card.addEventListener('click', ()=>{
+          state.largo = materials.find(x=>x.id===card.dataset.id);
+          largoGrid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+          card.classList.add('selected');
+          update(); goTo(4);
+        });
+      });
+    }
+    renderLargo();
+    if (state.tecnica && state.color) setTimeout(()=>goTo(2),0);
+
+    // --- extras ---
+    const extrasGrid = document.getElementById('extras-grid');
+    extrasGrid.innerHTML = byCat('extra').map(m=>`
+      <div class="option-card ${state.extras.find(x=>x.id===m.id)?'selected':''}" data-id="${m.id}" tabindex="0" role="button" aria-pressed="${!!state.extras.find(x=>x.id===m.id)}">
+        <div style="width:100%;height:100%;display:grid;place-items:center;background:var(--color-bg-secondary);font-weight:500">${m.nombre}</div>
+        <div class="option-card-label">+${formatPrice(m.precio_base)}</div>
+      </div>
+    `).join('');
+    extrasGrid.querySelectorAll('.option-card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const m = materials.find(x=>x.id===card.dataset.id);
+        const idx = state.extras.findIndex(x=>x.id===m.id);
+        if (idx>=0) { state.extras.splice(idx,1); card.classList.remove('selected'); }
+        else { state.extras.push(m); card.classList.add('selected'); }
+        update();
+      });
+    });
+
+    // --- navigation ---
+    function goTo(n){
+      document.querySelectorAll('.calculator-step').forEach(s=>s.classList.remove('active'));
+      document.getElementById(`step-${n}`).classList.add('active');
+      document.querySelectorAll('.step-indicator').forEach(s=>{
+        const sn = Number(s.dataset.step);
+        s.classList.toggle('active', sn===n);
+        s.classList.toggle('completed', sn<n);
+      });
+      window.scrollTo({ top: 0, behavior:'smooth' });
+    }
+    document.querySelectorAll('[data-next]').forEach(b=> b.addEventListener('click', ()=> goTo(Number(b.dataset.next))));
+    document.querySelectorAll('[data-prev]').forEach(b=> b.addEventListener('click', ()=> goTo(Number(b.dataset.prev))));
+
+    // --- summary & validation ---
+    const summaryRows = document.getElementById('summary-rows');
+    const summaryStatus = document.getElementById('summary-status');
+    const btnAgendar = document.getElementById('btn-agendar');
+    const btnAgendar2 = document.getElementById('btn-agendar-2');
+    const hint = document.getElementById('calc-hint');
+
+    function calcTotal(){
+      let total = 0;
+      if (state.tecnica) total += state.tecnica.precio_base;
+      if (state.color) total += state.color.precio_base;
+      if (state.largo) total += state.largo.precio_base;
+      state.extras.forEach(e=> total+= e.precio_base);
+      return total;
+    }
+    function isComplete(){ return !!(state.tecnica && state.color && state.largo); }
+
+    function update(){
+      const total = calcTotal();
+      const rows = [];
+      if (state.tecnica) rows.push(['Técnica', `${state.tecnica.nombre}`, formatPrice(state.tecnica.precio_base)]);
+      if (state.color) rows.push(['Color', state.color.nombre, formatPrice(state.color.precio_base)]);
+      if (state.largo) rows.push(['Largo', state.largo.nombre, formatPrice(state.largo.precio_base)]);
+      state.extras.forEach(e=> rows.push(['Extra', e.nombre, formatPrice(e.precio_base)]));
+      if (!rows.length) {
+        summaryRows.innerHTML = `<p class="text-sm text-muted">Selecciona técnica, color y largo para ver el precio.</p>`;
+      } else {
+        summaryRows.innerHTML = rows.map(([k,v,p])=>`
+          <div class="calculator-summary-row"><span>${k} · ${v}</span><span style="font-family:var(--font-mono)">${p}</span></div>
+        `).join('') + `<div class="calculator-summary-row"><span>Total</span><span class="calculator-summary-total" style="font-family:var(--font-mono)">${formatPrice(total)}</span></div>`;
+      }
+      const complete = isComplete();
+      summaryStatus.textContent = complete ? 'Listo para agendar' : 'Incompleto';
+      summaryStatus.style.background = complete ? '#D1FADF' : 'var(--color-bg-secondary)';
+      summaryStatus.style.color = complete ? '#006E2E' : 'var(--color-text-secondary)';
+      btnAgendar.disabled = !complete;
+      btnAgendar2.disabled = !complete;
+      hint.textContent = complete ? '¡Todo listo! Agenda con este precio y elige día/hora.' : 'Completa técnica, color y largo para agendar.';
+      renderColors();
+    }
+
+    function buildServicioLabel(){
+      const parts = [];
+      if (state.tecnica) parts.push(state.tecnica.nombre);
+      if (state.color) parts.push(state.color.nombre);
+      if (state.largo) parts.push(state.largo.nombre);
+      if (state.extras.length) parts.push(state.extras.map(e=>e.nombre).join(', '));
+      return parts.join(' · ');
+    }
+
+    function handleAgendar(){
+      if (!isComplete()) { toast('Completa técnica, color y largo antes de agendar.', 'warning'); return; }
+      const payload = {
+        tecnica: state.tecnica.nombre,
+        color: state.color.nombre,
+        colorHex: state.color.color_hex,
+        largo: state.largo.nombre,
+        extras: state.extras.map(e=>e.nombre),
+        total: calcTotal(),
+        servicio: buildServicioLabel(),
+      };
+      saveCalcSelection(payload);
+      location.href='agendar.html';
+    }
+    btnAgendar.addEventListener('click', handleAgendar);
+    btnAgendar2.addEventListener('click', handleAgendar);
+    document.getElementById('btn-reset').addEventListener('click', ()=>{
+      state.tecnica=null; state.color=colors[0]; state.largo=null; state.extras=[];
+      document.querySelectorAll('.option-card.selected').forEach(c=>c.classList.remove('selected'));
+      extrasGrid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+      tecnicaGrid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+      goTo(1); update();
+      toast('Selección reiniciada','info');
+    });
+
+    update();
+  </script>
+</body>
+</html>

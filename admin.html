@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Nails Studio</title>
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <div id="login-view" class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="footer-logo" style="text-align:center">Nails<span>.</span> Studio</div>
+        <h1 class="login-title">Panel admin</h1>
+        <p class="login-subtitle">Accede con tu cuenta de Supabase Auth</p>
+      </div>
+      <div id="supabase-warning" style="display:none; background:#FFF3E0; border:1px solid #FFE0B2; padding:var(--space-3); border-radius:var(--radius-md); font-size:0.875rem; margin-bottom:var(--space-4)">
+        Supabase no configurado — usando modo demo local.<br>
+        Usuario: <strong>admin</strong> · Contraseña: <strong>admin123</strong>
+        <details class="mt-2"><summary style="cursor:pointer">Configurar Supabase</summary>
+          <div class="mt-3" style="display:flex; flex-direction:column; gap:var(--space-2)">
+            <input id="cfg-url" class="admin-form-input" placeholder="https://xxx.supabase.co">
+            <input id="cfg-key" class="admin-form-input" placeholder="anon key">
+            <button id="cfg-save" class="btn btn-primary btn-sm">Guardar y recargar</button>
+            <p class="text-sm text-muted">Se guarda en localStorage. Ver <code>data/schema.sql</code></p>
+          </div>
+        </details>
+      </div>
+      <form id="login-form" class="login-form">
+        <div id="login-error" class="login-error"></div>
+        <div class="input-group">
+          <label class="input-label" for="email">Email o usuario</label>
+          <input class="input-field" id="email" placeholder="admin@nails.studio" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="password">Contraseña</label>
+          <input class="input-field" id="password" type="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary login-btn w-full">Entrar</button>
+        <a href="index.html" class="btn btn-ghost w-full">← Volver al sitio</a>
+      </form>
+    </div>
+  </div>
+
+  <div id="app-view" style="display:none">
+    <div class="admin-layout">
+      <aside class="admin-sidebar" id="sidebar">
+        <div class="admin-sidebar-header">
+          <div class="admin-logo">Nails<span>.</span> Studio</div>
+          <div class="text-sm text-muted">Panel admin</div>
+        </div>
+        <nav class="admin-nav" aria-label="Admin">
+          <button class="admin-nav-item active" data-view="hoy">📅 Hoy</button>
+          <button class="admin-nav-item" data-view="calendario">🗓️ Calendario</button>
+          <button class="admin-nav-item" data-view="catalogo">💅 Catálogo</button>
+          <button class="admin-nav-item" data-view="precios">💲 Precios</button>
+          <button class="admin-nav-item" data-view="bloqueos">⛔ Bloqueos</button>
+        </nav>
+        <div class="admin-user">
+          <div class="admin-user-avatar">A</div>
+          <div class="admin-user-info">
+            <div class="admin-user-name" id="user-email">admin</div>
+            <div class="admin-user-role">Administrador</div>
+          </div>
+          <button id="btn-logout" class="admin-btn-icon" title="Cerrar sesión">⎋</button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <div class="admin-header">
+          <h1 class="admin-title" id="admin-title">Hoy</h1>
+          <div class="flex gap-2">
+            <button id="btn-mobile-menu" class="btn btn-secondary" style="display:none">☰</button>
+            <button id="btn-refresh" class="btn btn-secondary">↻ Actualizar</button>
+          </div>
+        </div>
+
+        <!-- HOY -->
+        <section id="view-hoy" class="admin-content active">
+          <div class="stats-grid" id="stats-grid"></div>
+          <div class="admin-card">
+            <div style="padding:var(--space-4); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--color-border)">
+              <h3 class="font-semibold">Citas de hoy — <span id="hoy-fecha"></span></h3>
+              <span class="badge" id="hoy-count">0 citas</span>
+            </div>
+            <div style="overflow:auto">
+              <table class="admin-table">
+                <thead><tr><th>Hora</th><th>Clienta</th><th>Servicio</th><th>Precio</th><th>Estado</th><th></th></tr></thead>
+                <tbody id="hoy-tbody"></tbody>
+              </table>
+            </div>
+            <div id="hoy-empty" class="empty-state" style="display:none">
+              <div class="empty-state-title">Sin citas hoy</div>
+              <p class="empty-state-description">Día tranquilo — aprovecha para bloquear horarios o editar el catálogo.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- CALENDARIO -->
+        <section id="view-calendario" class="admin-content">
+          <div class="admin-card" style="padding:var(--space-6)">
+            <div style="display:flex; gap:var(--space-3); flex-wrap:wrap; align-items:center; margin-bottom:var(--space-6)">
+              <input type="date" id="cal-date" class="admin-form-input" style="width:auto">
+              <button id="cal-today" class="btn btn-secondary btn-sm">Hoy</button>
+              <span class="badge" id="cal-label"></span>
+            </div>
+            <div id="cal-list"></div>
+          </div>
+        </section>
+
+        <!-- CATALOGO -->
+        <section id="view-catalogo" class="admin-content">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-6)">
+            <h3 class="font-semibold">Catálogo</h3>
+            <button id="btn-add-catalog" class="btn btn-primary">+ Nuevo diseño</button>
+          </div>
+          <div id="catalog-admin-grid" class="catalog-grid"></div>
+        </section>
+
+        <!-- PRECIOS -->
+        <section id="view-precios" class="admin-content">
+          <p class="text-muted mb-6">Edita los precios base. La calculadora se recalcula automáticamente. Los cambios se guardan en Supabase (o en memoria en modo demo).</p>
+          <div id="precios-grid" class="material-form-grid"></div>
+          <button id="btn-save-precios" class="btn btn-primary mt-6">Guardar precios</button>
+        </section>
+
+        <!-- BLOQUEOS -->
+        <section id="view-bloqueos" class="admin-content">
+          <div class="admin-card" style="padding:var(--space-6)">
+            <h3 class="font-semibold mb-4">Bloquear horario</h3>
+            <form id="block-form" style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:var(--space-3); align-items:end">
+              <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Fecha</label><input type="date" id="block-fecha" class="admin-form-input" required></div>
+              <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Desde</label><input type="time" id="block-desde" class="admin-form-input" value="12:00" required></div>
+              <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Hasta</label><input type="time" id="block-hasta" class="admin-form-input" value="14:00" required></div>
+              <button type="submit" class="btn btn-primary">Bloquear</button>
+            </form>
+            <div class="mt-4"><input id="block-motivo" class="admin-form-input" placeholder="Motivo (ej. Comida, vacaciones)"></div>
+            <div id="bloqueos-list" class="mt-6"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal catálogo -->
+  <div id="catalog-modal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header"><h3 class="modal-title" id="catalog-modal-title">Nuevo diseño</h3><button class="modal-close" id="catalog-modal-close">×</button></div>
+      <form id="catalog-form" style="display:flex; flex-direction:column; gap:var(--space-4)">
+        <input type="hidden" id="cat-id">
+        <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Nombre *</label><input id="cat-nombre" class="admin-form-input" required></div>
+        <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Imagen URL</label><input id="cat-imagen" class="admin-form-input" placeholder="https://..."></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4)">
+          <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Técnica</label><select id="cat-tecnica" class="admin-form-select"><option>Gel semipermanente</option><option>Acrílico</option><option>Soft Gel</option><option>Polygel</option></select></div>
+          <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Color</label><select id="cat-color" class="admin-form-select"><option>Rojo Laca</option><option>Nude Rosé</option><option>Blanco Leche</option><option>Negro Azabache</option><option>Rosa Pastel</option><option>Verde Sage</option><option>Lila Lavanda</option><option>Dorado Champagne</option></select></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4)">
+          <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Precio desde</label><input id="cat-precio" type="number" class="admin-form-input" required></div>
+          <div class="admin-form-group" style="margin:0"><label class="admin-form-label">Ocasión</label><select id="cat-ocasion" class="admin-form-select"><option>diario</option><option>fiesta</option><option>novia</option><option>oficina</option></select></div>
+        </div>
+        <label style="display:flex; gap:var(--space-2); align-items:center"><input type="checkbox" id="cat-activo" checked> Activo</label>
+        <button type="submit" class="btn btn-primary w-full">Guardar</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { CONFIG, isSupabaseConfigured, saveSupabaseConfig } from './js/config.js';
+    import { getSupabase } from './js/supabase.js';
+    import { fetchAppointments, fetchCatalog, fetchMaterials, fetchBlockedSlots, updateAppointmentStatus, upsertBlockedSlot, MOCK_CATALOG, MOCK_MATERIALS, MOCK_BLOCKED } from './js/data.js';
+    import { formatPrice, formatDateLong } from './js/utils.js';
+    import { toast } from './js/components/toast.js';
+
+    const loginView = document.getElementById('login-view');
+    const appView = document.getElementById('app-view');
+    const warning = document.getElementById('supabase-warning');
+
+    if (!isSupabaseConfigured()) warning.style.display='block';
+    document.getElementById('cfg-save')?.addEventListener('click', ()=>{
+      const url=document.getElementById('cfg-url').value.trim();
+      const key=document.getElementById('cfg-key').value.trim();
+      if(!url||!key) return toast('Completa URL y anon key','warning');
+      saveSupabaseConfig(url,key);
+    });
+
+    // auth
+    async function checkAuth(){
+      if (sessionStorage.getItem('admin_demo')==='1') return true;
+      if (!isSupabaseConfigured()) return false;
+      const sb = await getSupabase();
+      const { data } = await sb.auth.getSession();
+      return !!data.session;
+    }
+    async function showApp(user){
+      loginView.style.display='none';
+      appView.style.display='block';
+      document.getElementById('user-email').textContent = user || 'admin';
+      await loadHoy();
+      await loadCatalogAdmin();
+      await loadPrecios();
+      await loadCalendario();
+      await loadBloqueos();
+    }
+    if (await checkAuth()) showApp(sessionStorage.getItem('admin_user')||'admin');
+
+    document.getElementById('login-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const email=document.getElementById('email').value.trim();
+      const pass=document.getElementById('password').value.trim();
+      const errEl=document.getElementById('login-error');
+      errEl.classList.remove('visible'); errEl.textContent='';
+      if (!isSupabaseConfigured()){
+        if (email==='admin' && pass==='admin123') {
+          sessionStorage.setItem('admin_demo','1');
+          sessionStorage.setItem('admin_user','admin');
+          showApp('admin');
+        } else { errEl.textContent='Credenciales demo: admin / admin123'; errEl.classList.add('visible'); }
+        return;
+      }
+      const sb=await getSupabase();
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+      if (error) { errEl.textContent=error.message; errEl.classList.add('visible'); return; }
+      sessionStorage.setItem('admin_user', data.user.email);
+      showApp(data.user.email);
+    });
+
+    document.getElementById('btn-logout').onclick = async ()=>{
+      sessionStorage.removeItem('admin_demo');
+      if (isSupabaseConfigured()) { const sb=await getSupabase(); await sb.auth.signOut(); }
+      location.reload();
+    };
+
+    // nav
+    document.querySelectorAll('.admin-nav-item').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.admin-nav-item').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const v=btn.dataset.view;
+        document.querySelectorAll('.admin-content').forEach(s=>s.classList.remove('active'));
+        document.getElementById('view-'+v).classList.add('active');
+        document.getElementById('admin-title').textContent = btn.textContent.replace(/^[^\w]+/,'').trim();
+      });
+    });
+    document.getElementById('btn-refresh').onclick = async ()=>{ await loadHoy(); toast('Actualizado','success'); };
+
+    // HOY
+    async function loadHoy(){
+      const today=new Date().toISOString().split('T')[0];
+      document.getElementById('hoy-fecha').textContent = new Date().toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long' });
+      const appts = await fetchAppointments(today);
+      const tbody=document.getElementById('hoy-tbody');
+      const empty=document.getElementById('hoy-empty');
+      document.getElementById('hoy-count').textContent = `${appts.length} citas`;
+      // stats
+      const totalHoy = appts.filter(a=>a.estado==='confirmada').length;
+      const ingresos = appts.filter(a=>a.estado==='confirmada').reduce((s,a)=>s+a.precio_total,0);
+      document.getElementById('stats-grid').innerHTML = `
+        <div class="stat-card"><div class="stat-value">${totalHoy}</div><div class="stat-label">Citas hoy</div></div>
+        <div class="stat-card"><div class="stat-value">${formatPrice(ingresos)}</div><div class="stat-label">Ingresos estimados</div></div>
+        <div class="stat-card"><div class="stat-value">${appts.filter(a=>a.estado==='cancelada').length}</div><div class="stat-label">Canceladas</div></div>
+      `;
+      if (!appts.length){ tbody.innerHTML=''; empty.style.display='flex'; return; }
+      empty.style.display='none';
+      tbody.innerHTML = appts.map(a=>`
+        <tr>
+          <td style="font-family:var(--font-mono); font-weight:600">${a.hora}</td>
+          <td><strong>${a.nombre_cliente}</strong><br><span class="text-sm text-muted">${a.telefono}</span></td>
+          <td class="text-sm">${a.servicio}</td>
+          <td style="font-family:var(--font-mono)">${formatPrice(a.precio_total)}</td>
+          <td><span class="status-badge ${a.estado==='confirmada'?'status-confirmed':a.estado==='cancelada'?'status-cancelled':'status-pending'}">${a.estado}</span></td>
+          <td><div class="admin-actions">
+            ${a.estado==='confirmada'?`<button class="admin-btn-icon delete" data-cancel="${a.id}" title="Cancelar">✕</button>`:''}
+            <a href="https://wa.me/52${a.telefono}?text=${encodeURIComponent('Hola '+a.nombre_cliente+'! Te confirmo tu cita '+a.fecha+' '+a.hora)}" target="_blank" class="admin-btn-icon" title="WhatsApp">💬</a>
+          </div></td>
+        </tr>
+      `).join('');
+      tbody.querySelectorAll('[data-cancel]').forEach(b=>{
+        b.onclick=async()=>{
+          if(!confirm('¿Cancelar esta cita?')) return;
+          await updateAppointmentStatus(b.dataset.cancel,'cancelada');
+          toast('Cita cancelada','success');
+          loadHoy(); loadCalendario();
+        };
+      });
+    }
+
+    // CALENDARIO
+    async function loadCalendario(){
+      const input=document.getElementById('cal-date');
+      if(!input.value) input.value=new Date().toISOString().split('T')[0];
+      const fecha=input.value;
+      document.getElementById('cal-label').textContent = formatDateLong(fecha);
+      const appts=await fetchAppointments(fecha);
+      const blocked=await fetchBlockedSlots(fecha);
+      const list=document.getElementById('cal-list');
+      if(!appts.length && !blocked.length){
+        list.innerHTML=`<p class="text-muted">Sin citas ni bloqueos para este día.</p>`;
+        return;
+      }
+      list.innerHTML = `
+        ${blocked.length?`<div class="mb-4"><strong>Bloqueos:</strong> ${blocked.map(b=>`${b.hora_inicio}–${b.hora_fin} (${b.motivo||''})`).join(', ')}</div>`:''}
+        ${appts.length?`<table class="admin-table"><thead><tr><th>Hora</th><th>Clienta</th><th>Servicio</th><th>Estado</th></tr></thead><tbody>${appts.map(a=>`<tr><td style="font-family:var(--font-mono)">${a.hora}</td><td>${a.nombre_cliente}</td><td>${a.servicio}</td><td><span class="status-badge ${a.estado==='confirmada'?'status-confirmed':'status-cancelled'}">${a.estado}</span></td></tr>`).join('')}</tbody></table>`:'<p class="text-muted">Sin citas.</p>'}
+      `;
+    }
+    document.getElementById('cal-date').addEventListener('change', loadCalendario);
+    document.getElementById('cal-today').onclick=()=>{ document.getElementById('cal-date').value=new Date().toISOString().split('T')[0]; loadCalendario(); };
+
+    // CATALOGO ADMIN
+    async function loadCatalogAdmin(){
+      const grid=document.getElementById('catalog-admin-grid');
+      const items = isSupabaseConfigured() ? await fetchCatalog() : MOCK_CATALOG;
+      // en demo mostrar todos incluyendo inactivos
+      const all = isSupabaseConfigured() ? items : MOCK_CATALOG;
+      grid.innerHTML = all.map(it=>`
+        <article class="catalog-card" style="aspect-ratio:1">
+          <img class="catalog-card-image" src="${it.imagen_url}" alt="${it.nombre}">
+          <div class="catalog-card-overlay" style="opacity:1">
+            <div class="catalog-card-info" style="transform:none">
+              <div class="catalog-card-name">${it.nombre} ${!it.activo?'<span class="badge" style="background:#FFDAD6;color:#BF241A">inactivo</span>':''}</div>
+              <div class="catalog-card-technique">${it.tecnica} · ${it.color}</div>
+              <div class="catalog-card-price">${formatPrice(it.precio_desde)}</div>
+              <div class="flex gap-2 mt-2">
+                <button class="btn btn-secondary btn-sm" data-edit="${it.id}">Editar</button>
+                <button class="btn btn-ghost btn-sm" style="background:rgba(255,255,255,0.9)" data-del="${it.id}">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      grid.querySelectorAll('[data-edit]').forEach(b=>{
+        b.onclick=()=>{
+          const it=all.find(x=>x.id===b.dataset.edit);
+          openCatalogModal(it);
+        };
+      });
+      grid.querySelectorAll('[data-del]').forEach(b=>{
+        b.onclick=async()=>{
+          if(!confirm('¿Eliminar diseño?')) return;
+          if(isSupabaseConfigured()){
+            const sb=await getSupabase(); await sb.from('catalog_items').delete().eq('id', b.dataset.del);
+          } else {
+            const idx=MOCK_CATALOG.findIndex(x=>x.id===b.dataset.del);
+            if(idx>=0) MOCK_CATALOG.splice(idx,1);
+          }
+          toast('Diseño eliminado','success'); loadCatalogAdmin();
+        };
+      });
+    }
+    const catModal=document.getElementById('catalog-modal');
+    function openCatalogModal(it=null){
+      document.getElementById('catalog-modal-title').textContent = it?'Editar diseño':'Nuevo diseño';
+      document.getElementById('cat-id').value = it?.id || '';
+      document.getElementById('cat-nombre').value = it?.nombre || '';
+      document.getElementById('cat-imagen').value = it?.imagen_url || '';
+      document.getElementById('cat-tecnica').value = it?.tecnica || 'Gel semipermanente';
+      document.getElementById('cat-color').value = it?.color || 'Rojo Laca';
+      document.getElementById('cat-precio').value = it?.precio_desde || 350;
+      document.getElementById('cat-ocasion').value = it?.ocasion || 'diario';
+      document.getElementById('cat-activo').checked = it ? it.activo : true;
+      catModal.classList.add('open');
+    }
+    document.getElementById('btn-add-catalog').onclick=()=>openCatalogModal();
+    document.getElementById('catalog-modal-close').onclick=()=>catModal.classList.remove('open');
+    catModal.addEventListener('click', e=>{ if(e.target===catModal) catModal.classList.remove('open'); });
+    document.getElementById('catalog-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const payload={
+        id: document.getElementById('cat-id').value || Math.random().toString(36).slice(2,9),
+        nombre: document.getElementById('cat-nombre').value.trim(),
+        imagen_url: document.getElementById('cat-imagen').value.trim() || 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80',
+        tecnica: document.getElementById('cat-tecnica').value,
+        color: document.getElementById('cat-color').value,
+        precio_desde: Number(document.getElementById('cat-precio').value),
+        activo: document.getElementById('cat-activo').checked,
+        ocasion: document.getElementById('cat-ocasion').value,
+      };
+      if(isSupabaseConfigured()){
+        const sb=await getSupabase();
+        const { error } = await sb.from('catalog_items').upsert(payload);
+        if(error) return toast(error.message,'error');
+      } else {
+        const idx=MOCK_CATALOG.findIndex(x=>x.id===payload.id);
+        if(idx>=0) MOCK_CATALOG[idx]=payload; else MOCK_CATALOG.push(payload);
+      }
+      catModal.classList.remove('open'); toast('Diseño guardado','success'); loadCatalogAdmin();
+    });
+
+    // PRECIOS
+    async function loadPrecios(){
+      const mats = await fetchMaterials();
+      const grid=document.getElementById('precios-grid');
+      const groups = { tecnica:[], color:[], largo:[], extra:[] };
+      mats.forEach(m=> groups[m.categoria]?.push(m));
+      grid.innerHTML = Object.entries(groups).map(([cat, arr])=>`
+        <div class="material-form-card">
+          <div class="material-form-card-title">${cat}</div>
+          ${arr.map(m=>`
+            <div class="admin-form-group">
+              <label class="admin-form-label">${m.nombre} ${m.color_hex?`<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${m.color_hex};vertical-align:middle;border:1px solid #ddd"></span>`:''}</label>
+              <input class="admin-form-input" data-mat="${m.id}" type="number" value="${m.precio_base}">
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+    }
+    document.getElementById('btn-save-precios').onclick=async()=>{
+      const inputs=document.querySelectorAll('[data-mat]');
+      for(const inp of inputs){
+        const id=inp.dataset.mat;
+        const val=Number(inp.value);
+        if(isSupabaseConfigured()){
+          const sb=await getSupabase(); await sb.from('materials').update({ precio_base: val }).eq('id', id);
+        } else {
+          const m=MOCK_MATERIALS.find(x=>x.id===id);
+          if(m) m.precio_base=val;
+        }
+      }
+      toast('Precios guardados','success');
+    };
+
+    // BLOQUEOS
+    async function loadBloqueos(){
+      const list=document.getElementById('bloqueos-list');
+      const all = isSupabaseConfigured() ? await fetchBlockedSlots() : MOCK_BLOCKED;
+      if(!all.length){ list.innerHTML='<p class="text-muted">Sin bloqueos.</p>'; return; }
+      list.innerHTML = all.map(b=>`<div style="display:flex; justify-content:space-between; padding:var(--space-3); border:1px solid var(--color-border); border-radius:var(--radius-md); margin-bottom:var(--space-2)"><span>${b.fecha} · ${b.hora_inicio}–${b.hora_fin} <span class="text-muted">${b.motivo||''}</span></span><span class="badge">${b.id.slice(0,4)}</span></div>`).join('');
+    }
+    document.getElementById('block-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const slot={ fecha: document.getElementById('block-fecha').value, hora_inicio: document.getElementById('block-desde').value, hora_fin: document.getElementById('block-hasta').value, motivo: document.getElementById('block-motivo').value.trim() };
+      if(!slot.fecha) return toast('Elige fecha','warning');
+      await upsertBlockedSlot(slot);
+      toast('Horario bloqueado','success'); loadBloqueos(); loadCalendario();
+    });
+  </script>
+</body>
+</html>

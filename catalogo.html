@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo — Nails Studio</title>
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Principal">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Nails<span>.</span> Studio</a>
+      <ul class="nav-links" role="list">
+        <li><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+        <li><a class="nav-link" href="calculadora.html">Calculadora</a></li>
+        <li><a class="nav-link" href="agendar.html">Agendar</a></li>
+      </ul>
+      <a href="agendar.html" class="btn btn-primary nav-cta">Reservar</a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </nav>
+  <div class="nav-mobile-menu"><ul class="nav-mobile-links"><li><a class="nav-mobile-link" href="catalogo.html">Catálogo</a></li><li><a class="nav-mobile-link" href="calculadora.html">Calculadora</a></li><li><a class="nav-mobile-link" href="agendar.html">Agendar</a></li></ul><a href="agendar.html" class="btn btn-primary nav-mobile-cta">Reservar cita</a></div>
+
+  <main style="padding-top:calc(var(--nav-height) + var(--space-10))">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title">Catálogo</h1>
+        <p class="section-subtitle">Filtra por técnica, color u ocasión. Cada diseño precarga la calculadora.</p>
+      </div>
+
+      <div class="catalog-filters" role="group" aria-label="Filtros">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="Gel semipermanente">Gel</button>
+        <button class="filter-btn" data-filter="Acrílico">Acrílico</button>
+        <button class="filter-btn" data-filter="Soft Gel">Soft Gel</button>
+        <button class="filter-btn" data-filter="Rojo Laca">Rojo</button>
+        <button class="filter-btn" data-filter="Nude Rosé">Nude</button>
+        <button class="filter-btn" data-filter="fiesta">Fiesta</button>
+        <button class="filter-btn" data-filter="diario">Diario</button>
+        <button class="filter-btn" data-filter="novia">Novia</button>
+      </div>
+
+      <div style="display:flex; gap:var(--space-3); justify-content:center; margin-bottom:var(--space-6)">
+        <input id="search" class="input-field" style="max-width:360px" placeholder="Buscar por nombre..." aria-label="Buscar">
+      </div>
+
+      <div id="grid" class="catalog-grid" aria-live="polite"></div>
+      <div id="empty" class="empty-state" style="display:none">
+        <div class="empty-state-icon">🔍</div>
+        <div class="empty-state-title">Sin resultados</div>
+        <p class="empty-state-description">Prueba con otros filtros o limpia la búsqueda.</p>
+        <button id="clear-filters" class="btn btn-secondary">Limpiar filtros</button>
+      </div>
+    </div>
+  </main>
+
+  <div data-footer></div>
+
+  <script type="module">
+    import { initNav } from './js/components/nav.js';
+    import { renderFooter } from './js/components/footer.js';
+    import { fetchCatalog } from './js/data.js';
+    import { formatPrice, saveCalcSelection } from './js/utils.js';
+    initNav('catalogo');
+    renderFooter();
+
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    const search = document.getElementById('search');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    let items = await fetchCatalog();
+    let activeFilter = 'todos';
+
+    function render() {
+      const q = search.value.toLowerCase().trim();
+      let filtered = items.filter(it => {
+        const matchesSearch = !q || it.nombre.toLowerCase().includes(q);
+        const matchesFilter = activeFilter==='todos' || it.tecnica===activeFilter || it.color===activeFilter || it.ocasion===activeFilter;
+        return matchesSearch && matchesFilter;
+      });
+      if (!filtered.length) {
+        grid.innerHTML=''; empty.style.display='flex'; return;
+      }
+      empty.style.display='none';
+      grid.innerHTML = filtered.map(it => `
+        <article class="catalog-card">
+          <img class="catalog-card-image" src="${it.imagen_url}" alt="${it.nombre}" loading="lazy">
+          <div class="catalog-card-overlay" style="opacity:1">
+            <div class="catalog-card-info" style="transform:none">
+              <div class="catalog-card-name">${it.nombre}</div>
+              <div class="catalog-card-technique">${it.tecnica} · ${it.color}</div>
+              <div class="catalog-card-price">Desde ${formatPrice(it.precio_desde)}</div>
+              <button class="btn btn-primary btn-sm catalog-card-btn" data-id="${it.id}">Usar este diseño</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      grid.querySelectorAll('button').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const it = filtered.find(x=>x.id===btn.dataset.id);
+          saveCalcSelection({ tecnica: it.tecnica, color: it.color, catalogId: it.id, catalogName: it.nombre });
+          location.href='calculadora.html';
+        });
+      });
+    }
+
+    filterBtns.forEach(b=>{
+      b.addEventListener('click', ()=>{
+        filterBtns.forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        activeFilter = b.dataset.filter;
+        render();
+      });
+    });
+    search.addEventListener('input', render);
+    document.getElementById('clear-filters').onclick = ()=>{
+      activeFilter='todos'; search.value=''; filterBtns.forEach(x=>x.classList.remove('active')); filterBtns[0].classList.add('active'); render();
+    };
+
+    if (!items.length) {
+      grid.innerHTML='';
+      empty.style.display='flex';
+      empty.querySelector('.empty-state-title').textContent='Catálogo vacío';
+      empty.querySelector('.empty-state-description').textContent='Aún no hay diseños. El admin puede agregarlos desde /admin.';
+      document.getElementById('clear-filters').style.display='none';
+    } else render();
+  </script>
+</body>
+</html>

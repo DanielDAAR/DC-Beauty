@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nails Studio — Uñas con acabado de salón</title>
+  <meta name="description" content="Catálogo, calculadora de precios y agenda online. Confirma tu cita por WhatsApp en segundos.">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💅</text></svg>">
+</head>
+<body>
+  <nav class="nav" aria-label="Principal">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Inicio">Nails<span>.</span> Studio</a>
+      <ul class="nav-links" role="list">
+        <li><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+        <li><a class="nav-link" href="calculadora.html">Calculadora</a></li>
+        <li><a class="nav-link" href="agendar.html">Agendar</a></li>
+      </ul>
+      <a href="agendar.html" class="btn btn-primary nav-cta">Reservar</a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div id="mobile-menu" class="nav-mobile-menu" role="dialog" aria-label="Menú">
+    <ul class="nav-mobile-links" role="list">
+      <li><a class="nav-mobile-link" href="catalogo.html">Catálogo</a></li>
+      <li><a class="nav-mobile-link" href="calculadora.html">Calculadora</a></li>
+      <li><a class="nav-mobile-link" href="agendar.html">Agendar</a></li>
+    </ul>
+    <a href="agendar.html" class="btn btn-primary nav-mobile-cta">Reservar cita</a>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-badge">✨ Nuevo · Agenda sin fricción</div>
+          <h1 class="hero-title">Uñas que se <span>sienten</span> de salón, cada vez.</h1>
+          <p class="hero-description">Elige tu diseño, calcula el precio al instante y confirma por WhatsApp. Sin llamadas, sin esperas.</p>
+          <div class="hero-price">
+            <span class="hero-price-label">Desde</span>
+            <span class="hero-price-value" style="font-family:var(--font-mono)">$350 MXN</span>
+          </div>
+          <div class="hero-actions">
+            <a href="agendar.html" class="btn btn-primary btn-lg">Agendar ahora</a>
+            <a href="catalogo.html" class="btn btn-secondary btn-lg">Ver catálogo</a>
+          </div>
+          <p class="text-sm text-muted mt-3">📍 Roma Norte · Lun–Sáb 9:00–19:00 · Respuesta por WhatsApp en minutos</p>
+        </div>
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900&q=80" alt="Manicura roja elegante, primer plano">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Diseños que enamoran</h2>
+        <p class="section-subtitle">Cuatro favoritos — toca “Usar este diseño” y ajusta el precio en la calculadora.</p>
+      </div>
+      <div id="home-catalog" class="catalog-grid" aria-live="polite"></div>
+      <div class="text-center mt-8"><a href="catalogo.html" class="btn btn-secondary">Ver catálogo completo →</a></div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--color-bg-secondary)">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:1.1fr 0.9fr; gap:var(--space-12); align-items:center">
+        <div>
+          <h2 class="section-title" style="text-align:left; margin-bottom:var(--space-4)">Calcula tu precio en segundos</h2>
+          <p class="text-lg text-muted" style="margin-bottom:var(--space-6)">Técnica → color → largo → extras. El precio se actualiza en vivo, sin sorpresas.</p>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:var(--space-3); margin-bottom:var(--space-6)">
+            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">1</span> Elige técnica (gel, acrílico, soft gel…)</li>
+            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">2</span> Selector de color estilo Apple — círculo grande + swatches</li>
+            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">3</span> Agrega largo y extras, agenda con ese precio</li>
+          </ul>
+          <a href="calculadora.html" class="btn btn-primary btn-lg">Abrir calculadora</a>
+        </div>
+        <div style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-xl); padding:var(--space-8); text-align:center">
+          <div style="width:100px;height:100px;border-radius:50%;background:#9B2542;margin:0 auto var(--space-4);border:3px solid var(--color-border);box-shadow:var(--shadow-lg)"></div>
+          <div style="display:flex; gap:var(--space-2); justify-content:center; margin-bottom:var(--space-4)">
+            <span style="width:28px;height:28px;border-radius:50%;background:#9B2542;display:inline-block; border:2px solid #fff; box-shadow:0 0 0 2px #9B2542"></span>
+            <span style="width:28px;height:28px;border-radius:50%;background:#D8B4A0;display:inline-block"></span>
+            <span style="width:28px;height:28px;border-radius:50%;background:#F5F5F0;display:inline-block; border:1px solid #ddd"></span>
+            <span style="width:28px;height:28px;border-radius:50%;background:#1A1A1A;display:inline-block"></span>
+            <span style="width:28px;height:28px;border-radius:50%;background:#E8A0BF;display:inline-block"></span>
+          </div>
+          <div style="font-weight:600">Rojo Laca</div>
+          <div class="price text-accent">+$0</div>
+          <p class="text-sm text-muted mt-2">El elemento firma: preview grande + fila de puntos seleccionables, todo con transición suave.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card" style="padding:var(--space-10); display:grid; grid-template-columns:1fr auto; gap:var(--space-6); align-items:center; background:var(--color-text); color:#fff; border:none">
+        <div>
+          <h3 style="font-size:1.75rem; font-weight:700; letter-spacing:-0.02em; margin-bottom:var(--space-2)">¿Lista para tu cita?</h3>
+          <p style="color:rgba(255,255,255,0.7)">Elige día y hora, deja tus datos y recibe confirmación por WhatsApp al instante.</p>
+        </div>
+        <a href="agendar.html" class="btn" style="background:#fff; color:#000">Agendar con WhatsApp →</a>
+      </div>
+    </div>
+  </section>
+
+  <div data-footer></div>
+
+  <script type="module">
+    import { initNav } from './js/components/nav.js';
+    import { renderFooter } from './js/components/footer.js';
+    import { fetchCatalog } from './js/data.js';
+    import { formatPrice, saveCalcSelection } from './js/utils.js';
+    initNav('home');
+    renderFooter();
+    const grid = document.getElementById('home-catalog');
+    const items = (await fetchCatalog()).slice(0,4);
+    if (!items.length) {
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-title">Catálogo vacío</div><p class="empty-state-description">Aún no hay diseños publicados. Vuelve pronto.</p></div>`;
+    } else {
+      grid.innerHTML = items.map(it => `
+        <article class="catalog-card">
+          <img class="catalog-card-image" src="${it.imagen_url}" alt="${it.nombre}" loading="lazy">
+          <div class="catalog-card-overlay" style="opacity:1">
+            <div class="catalog-card-info" style="transform:none">
+              <div class="catalog-card-name">${it.nombre}</div>
+              <div class="catalog-card-technique">${it.tecnica} · ${it.color}</div>
+              <div class="catalog-card-price">Desde ${formatPrice(it.precio_desde)}</div>
+              <button class="btn btn-primary btn-sm catalog-card-btn" data-id="${it.id}">Usar este diseño</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      grid.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const it = items.find(x=>x.id===btn.dataset.id);
+          saveCalcSelection({ tecnica: it.tecnica, color: it.color, catalogId: it.id });
+          location.href = 'calculadora.html';
+        });
+      });
+    }
+  </script>
+</body>
+</html>
