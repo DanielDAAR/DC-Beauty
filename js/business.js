@@ -4,11 +4,11 @@ export const BUSINESS = {
 };
 
 export const TECHNIQUES = [
-  { id: "acrilico", name: "Acrílico", pricing_type: "length", description: "Acrílico con 1 tono liso", icon: "💅" },
-  { id: "bano_acrilico", name: "Baño de acrílico", pricing_type: "unknown", icon: "✨" },
-  { id: "gel_semipermanente_manos", name: "Gel semipermanente manos", pricing_type: "unknown", icon: "🤲" },
-  { id: "pies_gel", name: "Pies gel", pricing_type: "unknown", icon: "🦶" },
-  { id: "acripie", name: "Acripie", pricing_type: "unknown", icon: "🦶✨" },
+  { id: "acrilico", name: "Acrílico", pricing_type: "length", description: "Acrílico con 1 tono liso — el más pedido", icon: "💅" },
+  { id: "bano_acrilico", name: "Baño de acrílico", pricing_type: "unknown", description: "Capa protectora sobre tu uña natural", icon: "✨" },
+  { id: "gel_semipermanente_manos", name: "Gel manos", pricing_type: "unknown", description: "Brillo duradero sin extensión", icon: "🤲" },
+  { id: "pies_gel", name: "Pies gel", pricing_type: "unknown", description: "Gel semipermanente para pies", icon: "🦶" },
+  { id: "acripie", name: "Acripie", pricing_type: "unknown", description: "Refuerzo y extensión para uñas de los pies", icon: "🦶✨" },
 ];
 
 export const LENGTHS = [
@@ -36,10 +36,10 @@ export const DECORATIONS = [
   { id: "relieve", name: "Relieve", price: 10, unit: "par" },
   { id: "flores_3d", name: "3D flores", price: 15, unit: "par" },
   { id: "frances", name: "Francés", price: 5, unit: "par" },
-  { id: "nail_art_simple", name: "Nail art simple", price: 5, unit: "par" },
-  { id: "nail_art_complicado", name: "Nail art complicado", price: 10, unit: "par" },
+  { id: "nail_art_simple", name: "Diseño simple", price: 5, unit: "par", desc: "Líneas o puntos minimalistas" },
+  { id: "nail_art_complicado", name: "Diseño detallado", price: 10, unit: "par", desc: "Dibujos o patrones hechos a mano" },
   { id: "encapsulado", name: "Encapsulado", price: 10, unit: "par" },
-  { id: "dijes_monos", name: "Dijes o moños", price: 15, unit: "par" },
+  { id: "dijes_monos", name: "Dijes o moños", price: 15, unit: "par", desc: "Aplicaciones 3D pequeñas" },
   { id: "sticker", name: "Sticker", price: 5, unit: "par" },
   { id: "baby_boomer", name: "Baby boomer", price: 10, unit: "par" },
   { id: "cristal_redondo", name: "Cristal redondo", price: 1, unit: "cristal", hint: "$1 c/u" },

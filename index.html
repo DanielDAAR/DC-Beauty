@@ -7,7 +7,7 @@
   <meta name="description" content="Catálogo, calculadora de precios y agenda online. Confirma tu cita por WhatsApp en segundos.">
   <link rel="stylesheet" href="css/design-system.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💅</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%239B2542'/><text y='.88em' x='50%' dominant-baseline='middle' text-anchor='middle' font-size='56' fill='white'>N</text></svg>">
 </head>
 <body>
   <nav class="nav" aria-label="Principal">
@@ -37,18 +37,18 @@
     <div class="container">
       <div class="hero-inner">
         <div class="hero-content">
-          <div class="hero-badge">✨ Nuevo · Agenda sin fricción</div>
-          <h1 class="hero-title">Uñas que se <span>sienten</span> de salón, cada vez.</h1>
-          <p class="hero-description">Elige tu diseño, calcula el precio al instante y confirma por WhatsApp. Sin llamadas, sin esperas.</p>
+          <div class="hero-badge">Agenda sin fricción · WhatsApp</div>
+          <h1 class="hero-title">Tu largo, tu diseño, <span>tu precio</span> — antes de reservar.</h1>
+          <p class="hero-description">Ve cómo te queda cada largo, compara decoraciones y sabe cuánto vas a pagar. Sin sorpresas, sin tener que preguntar.</p>
           <div class="hero-price">
-            <span class="hero-price-label">Desde</span>
-            <span class="hero-price-value" style="font-family:var(--font-mono)">$350 MXN</span>
+            <span class="hero-price-label">Acrílico desde</span>
+            <span class="hero-price-value" style="font-family:var(--font-mono)">$240 MXN</span>
           </div>
           <div class="hero-actions">
-            <a href="agendar.html" class="btn btn-primary btn-lg">Agendar ahora</a>
-            <a href="catalogo.html" class="btn btn-secondary btn-lg">Ver catálogo</a>
+            <a href="catalogo.html" class="btn btn-secondary btn-lg">Ver diseños</a>
+            <a href="calculadora.html" class="btn btn-primary btn-lg">Calcular mi precio</a>
           </div>
-          <p class="text-sm text-muted mt-3">📍 Roma Norte · Lun–Sáb 9:00–19:00 · Respuesta por WhatsApp en minutos</p>
+          <p class="text-sm text-muted mt-3" style="display:flex;gap:var(--space-2);align-items:center;justify-content:center;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg> Roma Norte</span> · Lun–Sáb 9:00–19:00 · <span style="display:inline-flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4L12 21l-7.1-4.1A8.38 8.38 0 0 1 3 11.5a8.5 8.5 0 0 1 12-7.6 8.5 8.5 0 0 1 6 7.6z"/><path d="M12 8v5l3 2"/></svg> Respuesta en minutos</span></p>
         </div>
         <div class="hero-image">
           <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900&q=80" alt="Manicura roja elegante, primer plano">
@@ -60,11 +60,11 @@
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Diseños que enamoran</h2>
-        <p class="section-subtitle">Cuatro favoritos — toca “Usar este diseño” y ajusta el precio en la calculadora.</p>
+        <h2 class="section-title">Inspiración para empezar</h2>
+        <p class="section-subtitle">Elige un diseño que te guste y úsalo para calcular tu precio — sin tener que decidir todo desde cero.</p>
       </div>
       <div id="home-catalog" class="catalog-grid" aria-live="polite"></div>
-      <div class="text-center mt-8"><a href="catalogo.html" class="btn btn-secondary">Ver catálogo completo →</a></div>
+      <div class="text-center mt-8"><a href="catalogo.html" class="btn btn-secondary">Explorar todos los diseños</a></div>
     </div>
   </section>
 
@@ -72,14 +72,14 @@
     <div class="container">
       <div style="display:grid; grid-template-columns:1.1fr 0.9fr; gap:var(--space-12); align-items:center">
         <div>
-          <h2 class="section-title" style="text-align:left; margin-bottom:var(--space-4)">Calcula tu precio en segundos</h2>
-          <p class="text-lg text-muted" style="margin-bottom:var(--space-6)">Técnica → color → largo → extras. El precio se actualiza en vivo, sin sorpresas.</p>
+          <h2 class="section-title" style="text-align:left; margin-bottom:var(--space-4)">Sabe cuánto vas a pagar antes de reservar</h2>
+          <p class="text-lg text-muted" style="margin-bottom:var(--space-6)">Acrílico por largo (Mini $240 → 11 $620) + decoración por par. Todo sumado en vivo, sin tener que preguntar.</p>
           <ul style="list-style:none; display:flex; flex-direction:column; gap:var(--space-3); margin-bottom:var(--space-6)">
-            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">1</span> Elige técnica (gel, acrílico, soft gel…)</li>
-            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">2</span> Selector de color estilo Apple — círculo grande + swatches</li>
-            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">3</span> Agrega largo y extras, agenda con ese precio</li>
+            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">1</span> Elige largo — Mini ras del dedo hasta XXL</li>
+            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">2</span> Añade decoración por par — Aurora, Espejo, Francesa…</li>
+            <li style="display:flex; gap:var(--space-3); align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-light);display:grid;place-items:center;color:var(--color-accent);font-weight:600">3</span> Ve el total y reserva con ese precio cerrado</li>
           </ul>
-          <a href="calculadora.html" class="btn btn-primary btn-lg">Abrir calculadora</a>
+          <a href="calculadora.html" class="btn btn-primary btn-lg">Calcular mi precio</a>
         </div>
         <div style="background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-xl); padding:var(--space-8); text-align:center">
           <div style="width:100px;height:100px;border-radius:50%;background:#9B2542;margin:0 auto var(--space-4);border:3px solid var(--color-border);box-shadow:var(--shadow-lg)"></div>
@@ -90,26 +90,67 @@
             <span style="width:28px;height:28px;border-radius:50%;background:#1A1A1A;display:inline-block"></span>
             <span style="width:28px;height:28px;border-radius:50%;background:#E8A0BF;display:inline-block"></span>
           </div>
-          <div style="font-weight:600">Rojo Laca</div>
-          <div class="price text-accent">+$0</div>
-          <p class="text-sm text-muted mt-2">El elemento firma: preview grande + fila de puntos seleccionables, todo con transición suave.</p>
+          <div style="font-weight:600">Acrílico · Largo 3 — $310</div>
+          <div class="price text-accent">+ Aurora $5 · Frances $5</div>
+          <p class="text-sm text-muted mt-2">Largo visual + decoraciones por par. El precio nunca se esconde.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--color-bg-secondary)">
+    <div class="container">
+      <div style="max-width:760px;margin:0 auto;text-align:center">
+        <h2 class="section-title" style="font-size:1.75rem">¿Qué largo es cada número?</h2>
+        <p class="section-subtitle">No tienes que saber qué significa Largo 3 o 5. Toca y ve la diferencia.</p>
+        <div style="display:flex;align-items:end;justify-content:center;gap:6px;margin:var(--space-8) 0;overflow-x:auto;padding-bottom:var(--space-2)">
+          <div style="text-align:center"><div style="width:28px;height:18px;background:var(--color-text);border-radius:4px 4px 0 0;margin:0 auto 6px"></div><span style="font-family:var(--font-mono);font-size:0.75rem">Mini</span></div>
+          <div style="text-align:center"><div style="width:28px;height:28px;background:var(--color-accent);border-radius:6px 6px 0 0;margin:0 auto 6px"></div><span style="font-family:var(--font-mono);font-size:0.75rem">1</span></div>
+          <div style="text-align:center"><div style="width:28px;height:38px;background:var(--color-accent);border-radius:6px 6px 0 0;margin:0 auto 6px"></div><span style="font-family:var(--font-mono);font-size:0.75rem">2</span></div>
+          <div style="text-align:center"><div style="width:28px;height:48px;background:var(--color-accent);border-radius:6px 6px 0 0;margin:0 auto 6px"></div><span style="font-family:var(--font-mono);font-size:0.75rem">3</span></div>
+          <div style="text-align:center"><div style="width:28px;height:58px;background:var(--color-accent);border-radius:6px 6px 0 0;margin:0 auto 6px"></div><span style="font-family:var(--font-mono);font-size:0.75rem">4</span></div>
+          <div style="text-align:center"><div style="width:28px;height:68px;background:var(--color-accent);border-radius:6px 6px 0 0;margin:0 auto 6px"></div><span style="font-family:var(--font-mono);font-size:0.75rem">5+</span></div>
+        </div>
+        <p class="text-sm text-muted">Largo 3 — longitud media, cómoda para el día a día. Pruébalo en la calculadora.</p>
+        <a href="calculadora.html" class="btn btn-secondary mt-4">Probar visualizador</a>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <div class="card" style="padding:var(--space-10); display:grid; grid-template-columns:1fr auto; gap:var(--space-6); align-items:center; background:var(--color-text); color:#fff; border:none">
-        <div>
-          <h3 style="font-size:1.75rem; font-weight:700; letter-spacing:-0.02em; margin-bottom:var(--space-2)">¿Lista para tu cita?</h3>
-          <p style="color:rgba(255,255,255,0.7)">Elige día y hora, deja tus datos y recibe confirmación por WhatsApp al instante.</p>
-        </div>
-        <a href="agendar.html" class="btn" style="background:#fff; color:#000">Agendar con WhatsApp →</a>
+      <h2 class="section-title" style="font-size:1.5rem;margin-bottom:var(--space-6)">Antes de tu cita</h2>
+      <div class="grid grid-3">
+        <div class="card" style="padding:var(--space-6);border:none;background:var(--color-bg-secondary)"><h3 style="font-weight:600;margin-bottom:var(--space-2)">¿No sabes qué diseño elegir?</h3><p class="text-sm text-muted">Trae una referencia y lo adaptamos a tu largo y forma. También puedes empezar desde un diseño del catálogo.</p></div>
+        <div class="card" style="padding:var(--space-6);border:none;background:var(--color-bg-secondary)"><h3 style="font-weight:600;margin-bottom:var(--space-2)">¿No sabes cuánto costará?</h3><p class="text-sm text-muted">Usa la calculadora: largo (Mini $240 → 11 $620) + decoración por par. Ves el total antes de reservar.</p></div>
+        <div class="card" style="padding:var(--space-6);border:none;background:var(--color-bg-secondary)"><h3 style="font-weight:600;margin-bottom:var(--space-2)">¿Traes trabajo anterior?</h3><p class="text-sm text-muted">Selecciona retiro al calcular: propio $100 o externo $150. También hay reposición Ch/M/G si se te cayó alguna.</p></div>
       </div>
     </div>
   </section>
 
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="card" style="padding:var(--space-10); display:grid; grid-template-columns:1fr auto; gap:var(--space-6); align-items:center; background:var(--color-text); color:#fff; border:none">
+        <div>
+          <h3 style="font-size:1.75rem; font-weight:700; letter-spacing:-0.02em; margin-bottom:var(--space-2)">¿Ya sabes qué quieres?</h3>
+          <p style="color:rgba(255,255,255,0.7)">Reserva directo o calcula primero y ve el precio cerrado. Confirmación por WhatsApp.</p>
+        </div>
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap">
+          <a href="calculadora.html" class="btn btn-secondary" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.2)">Calcular primero</a>
+          <a href="agendar.html" class="btn" style="background:#fff; color:#000">Reservar mi cita</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="bottom-nav" aria-label="Navegación móvil">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</a>
+      <a href="catalogo.html" class="bottom-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Diseños</a>
+      <a href="calculadora.html" class="bottom-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Precio</a>
+      <a href="agendar.html" class="bottom-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Cita</a>
+    </div>
+  </nav>
   <div data-footer></div>
 
   <script type="module">
