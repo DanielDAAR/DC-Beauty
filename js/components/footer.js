@@ -34,6 +34,8 @@ export function renderFooter() {
           <ul class="footer-links">
             <li><span class="footer-link">Lun–Sáb 9:00–19:00</span></li>
             <li><span class="footer-link">Dom cerrado</span></li>
+            <li><span class="footer-link">Emiliano Zapata 82, Centro</span></li>
+            <li><span class="footer-link">48970 Cihuatlán, Jal.</span></li>
             <li><a class="footer-link" href="https://maps.app.goo.gl/qezCBA5QgCTCMi9F9" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg> Ver en Google Maps</a></li>
           </ul>
         </div>
