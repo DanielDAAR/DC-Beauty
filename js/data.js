@@ -31,9 +31,9 @@ export const MOCK_MATERIALS = [
 
 export const MOCK_CATALOG = [
   { id:'1', nombre:'Almendra Pastel con Glitter - Coral Celeste y Nude', imagen_url:'/fotos/SaveClip.App_491036120_18010025165732768_399971174939827291_n.jpg', tecnica:'Acrílico', color:'Multicolor Pastel', precio_desde:280, activo:true, ocasion:'fiesta', tags:['almendra','glitter'] },
-  { id:'2', nombre:'Rojo Glitter Intenso - Cover Total', imagen_url:'/fotos/SaveClip.App_491461284_18010025201732768_1532658404636573176_n.jpg', tecnica:'Acrílico', color:'Rojo Glitter', precio_desde:310, activo:true, ocasion:'fiesta', tags:['cuadrado','brillo'] },
+  { id:'2', nombre:'Rojo Glitter Intenso - Cover Total', imagen_url:'/fotos/rojo-glitter-intenso.jpg', tecnica:'Acrílico', color:'Rojo Glitter', precio_desde:310, activo:true, ocasion:'fiesta', tags:['cuadrado','brillo'] },
   { id:'3', nombre:'Estrellas Rojas - Francesa con Estrella', imagen_url:'/fotos/SaveClip.App_491461922_18010025189732768_7860489324175486795_n.jpg', tecnica:'Acrílico', color:'Rojo + Nude', precio_desde:345, activo:true, ocasion:'fiesta', tags:['estrella','francesa'] },
-  { id:'4', nombre:'Francesa Roja Diagonal - Glitter y Nude', imagen_url:'/fotos/SaveClip.App_491933496_18010025186732768_3183738595868043797_n.jpg', tecnica:'Acrílico', color:'Rojo Glitter + Nude', precio_desde:345, activo:true, ocasion:'elegante', tags:['francesa','almendra'] },
+  { id:'4', nombre:'Francesa Roja Diagonal - Glitter y Nude', imagen_url:'/fotos/francesa-diagonal.jpg', tecnica:'Acrílico', color:'Rojo Glitter + Nude', precio_desde:345, activo:true, ocasion:'elegante', tags:['francesa','almendra'] },
   { id:'5', nombre:'Diseño Suéter Mate', imagen_url:'/fotos/SaveClip.App_557411869_18029138180732768_6379074342769458672_n.jpg', tecnica:'Acrílico', color:'Nude Rosé', precio_desde:345, activo:true, ocasion:'diario', tags:['invierno'] },
   { id:'6', nombre:'Gel Natural Corto', imagen_url:'/fotos/SaveClip.App_607693935_18038861234732768_6481186387095933816_n.jpg', tecnica:'Gel semipermanente manos', color:'Nude Rosé', precio_desde:260, activo:true, ocasion:'oficina', tags:['minimal'] },
   { id:'7', nombre:'Acripie Pedicura', imagen_url:'/fotos/SaveClip.App_623961014_18070206995537587_6619139069923772693_n.jpg', tecnica:'Acripie', color:'Rosa Pastel', precio_desde:280, activo:true, ocasion:'diario', tags:['pies'] },

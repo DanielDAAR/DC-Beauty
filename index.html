@@ -240,7 +240,7 @@
     } else {
       grid.innerHTML = items.map(it => `
         <article class="catalog-card">
-          <img class="catalog-card-image" src="${it.imagen_url}" alt="${it.nombre}" loading="lazy">
+          <img class="catalog-card-image" src="${it.imagen_url}" alt="${it.nombre}" loading="lazy" onerror="this.onerror=null;this.src='/fotos/SaveClip.App_491036120_18010025165732768_399971174939827291_n.jpg'">
           <div class="catalog-card-overlay" style="opacity:1">
             <div class="catalog-card-info" style="transform:none">
               <div class="catalog-card-name">${it.nombre}</div>
