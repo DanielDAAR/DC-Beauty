@@ -3,9 +3,80 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Calculadora — Nails Studio</title>
+  <title>Calculadora — Estudio Nails</title>
   <link rel="stylesheet" href="css/design-system.css">
   <link rel="stylesheet" href="css/components.css">
+  <style>
+    .calc-layout{display:grid;grid-template-columns:1.15fr 0.85fr;gap:var(--space-8);align-items:start}
+    @media(max-width:980px){.calc-layout{grid-template-columns:1fr}}
+    .calc-card{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6)}
+    .calc-step{margin-bottom:var(--space-8)}
+    .calc-step-title{font-size:0.8125rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:var(--space-3);display:flex;align-items:center;gap:var(--space-2)}
+    .calc-step-title span{width:24px;height:24px;border-radius:50%;background:var(--color-accent);color:#fff;display:grid;place-items:center;font-size:0.75rem;font-weight:700}
+    .technique-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3)}
+    @media(min-width:640px){.technique-grid{grid-template-columns:repeat(3,1fr)}}
+    .tech-card{position:relative;border:1.5px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4);cursor:pointer;transition:all var(--transition-base);background:var(--color-bg)}
+    .tech-card:hover{border-color:rgba(155,37,66,0.3);box-shadow:var(--shadow-sm)}
+    .tech-card.selected{border-color:var(--color-accent);box-shadow:0 0 0 2px var(--color-accent-light), var(--shadow-md)}
+    .tech-card.unknown{opacity:0.9}
+    .tech-card-icon{font-size:1.5rem;margin-bottom:var(--space-2)}
+    .tech-card-name{font-weight:600;font-size:0.9375rem;line-height:1.2}
+    .tech-card-desc{font-size:0.8125rem;color:var(--color-text-secondary);margin-top:2px}
+    .tech-card-badge{position:absolute;top:8px;right:8px;font-size:0.6875rem;font-weight:600;padding:2px 8px;border-radius:var(--radius-pill);background:var(--color-accent-light);color:var(--color-accent)}
+    .tech-card.selected .tech-card-badge{background:var(--color-accent);color:#fff}
+
+    .length-preview{width:100%;background:var(--color-bg-secondary);border-radius:var(--radius-xl);padding:var(--space-6);text-align:center;border:1px solid var(--color-border)}
+    .length-visual{height:72px;display:flex;align-items:end;justify-content:center;gap:4px;margin:var(--space-4) 0}
+    .length-bar{width:28px;background:linear-gradient(to top, #9B2542, #D86B85);border-radius:6px 6px 0 0;transition:height var(--transition-slow), background var(--transition-base)}
+    .length-price{font-family:var(--font-mono);font-size:2rem;font-weight:700;letter-spacing:-0.02em}
+    .length-name{font-weight:600}
+    .length-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-4);justify-content:center}
+    .length-chip{padding:var(--space-2) var(--space-4);border-radius:var(--radius-pill);border:1px solid var(--color-border);background:var(--color-bg);font-size:0.875rem;font-weight:500;cursor:pointer;transition:all var(--transition-fast);font-family:var(--font-mono)}
+    .length-chip:hover{border-color:var(--color-accent);color:var(--color-accent)}
+    .length-chip.active{background:var(--color-text);color:#fff;border-color:var(--color-text)}
+    .length-range{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--color-text-secondary);margin-top:var(--space-2);padding:0 var(--space-2)}
+    input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:var(--color-border);border-radius:var(--radius-pill);outline:none}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--color-accent);border:3px solid #fff;box-shadow:var(--shadow-md);cursor:pointer}
+    input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--color-accent);border:3px solid #fff;box-shadow:var(--shadow-md);cursor:pointer}
+
+    .deco-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3)}
+    @media(min-width:600px){.deco-grid{grid-template-columns:repeat(3,1fr)}}
+    .deco-card{border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-3);display:flex;flex-direction:column;gap:var(--space-2);cursor:pointer;transition:all var(--transition-base);background:var(--color-bg);position:relative}
+    .deco-card:hover{border-color:rgba(155,37,66,0.25);box-shadow:var(--shadow-sm)}
+    .deco-card.selected{border-color:var(--color-accent);background:var(--color-accent-light);box-shadow:0 0 0 1px var(--color-accent)}
+    .deco-card-head{display:flex;justify-content:space-between;align-items:start;gap:var(--space-2)}
+    .deco-name{font-weight:600;font-size:0.875rem;line-height:1.2}
+    .deco-price{font-family:var(--font-mono);font-size:0.8125rem;font-weight:600;color:var(--color-accent);white-space:nowrap}
+    .deco-card.selected .deco-price{color:var(--color-accent)}
+    .deco-unit{font-size:0.75rem;color:var(--color-text-secondary)}
+    .deco-qty{display:none;align-items:center;gap:var(--space-2);margin-top:var(--space-1)}
+    .deco-card.selected .deco-qty{display:flex}
+    .qty-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--color-border);background:var(--color-bg);display:grid;place-items:center;font-weight:600;cursor:pointer;transition:all var(--transition-fast)}
+    .qty-btn:hover{border-color:var(--color-accent);color:var(--color-accent)}
+    .qty-val{font-family:var(--font-mono);font-weight:600;min-width:24px;text-align:center}
+
+    .extra-row{display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-bg);cursor:pointer;transition:all var(--transition-fast);margin-bottom:var(--space-2)}
+    .extra-row:hover{border-color:rgba(155,37,66,0.25)}
+    .extra-row.active{border-color:var(--color-accent);background:var(--color-accent-light)}
+    .extra-row.negative.active{border-color:#0a7a42;background:#e8f5e9}
+    .extra-row-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--color-border);display:grid;place-items:center;transition:all var(--transition-fast);flex-shrink:0}
+    .extra-row.active .extra-row-check{background:var(--color-accent);border-color:var(--color-accent);color:#fff}
+    .extra-row.negative.active .extra-row-check{background:#0a7a42;border-color:#0a7a42}
+    .counter{display:flex;align-items:center;gap:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-pill);padding:var(--space-1) var(--space-2);background:var(--color-bg)}
+    .counter-btn{width:32px;height:32px;border-radius:50%;background:var(--color-bg-secondary);display:grid;place-items:center;font-weight:700;cursor:pointer;transition:all var(--transition-fast)}
+    .counter-btn:hover{background:var(--color-accent);color:#fff}
+    .counter-val{font-family:var(--font-mono);font-weight:700;min-width:20px;text-align:center}
+
+    .summary{position:sticky;top:calc(var(--nav-height) + var(--space-6));background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-lg)}
+    @media(max-width:980px){.summary{position:static}}
+    .summary-head{padding:var(--space-6);border-bottom:1px solid var(--color-border);background:linear-gradient(135deg, #fff 0%, #FCE4EC 100%)}
+    .summary-total{font-family:var(--font-mono);font-size:2.5rem;font-weight:700;letter-spacing:-0.03em;line-height:1}
+    .summary-lines{padding:var(--space-4) var(--space-6);max-height:320px;overflow:auto}
+    .summary-line{display:flex;justify-content:space-between;gap:var(--space-4);padding:var(--space-2) 0;border-bottom:1px dashed var(--color-border);font-size:0.875rem}
+    .summary-line:last-child{border:none}
+    .summary-line.negative{color:#0a7a42}
+    .summary-cta{padding:var(--space-6);background:var(--color-bg-secondary);display:flex;flex-direction:column;gap:var(--space-3)}
+  </style>
 </head>
 <body>
   <nav class="nav" aria-label="Principal">
@@ -13,7 +84,7 @@
       <a href="index.html" class="nav-logo">Nails<span>.</span> Studio</a>
       <ul class="nav-links" role="list">
         <li><a class="nav-link" href="catalogo.html">Catálogo</a></li>
-        <li><a class="nav-link" href="calculadora.html">Calculadora</a></li>
+        <li><a class="nav-link active" href="calculadora.html">Calculadora</a></li>
         <li><a class="nav-link" href="agendar.html">Agendar</a></li>
       </ul>
       <a href="agendar.html" class="btn btn-primary nav-cta">Reservar</a>
@@ -22,71 +93,92 @@
   </nav>
   <div class="nav-mobile-menu"><ul class="nav-mobile-links"><li><a class="nav-mobile-link" href="catalogo.html">Catálogo</a></li><li><a class="nav-mobile-link" href="calculadora.html">Calculadora</a></li><li><a class="nav-mobile-link" href="agendar.html">Agendar</a></li></ul><a href="agendar.html" class="btn btn-primary nav-mobile-cta">Reservar cita</a></div>
 
-  <main style="padding-top:calc(var(--nav-height) + var(--space-10))">
-    <div class="container" style="max-width:900px">
-      <div class="section-header">
-        <h1 class="section-title">Calculadora</h1>
-        <p class="section-subtitle">Arma tu diseño paso a paso. El precio se recalcula en vivo desde la tabla de materiales.</p>
+  <main style="padding-top:calc(var(--nav-height) + var(--space-6))">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:var(--space-6)">
+        <h1 class="section-title" style="font-size:clamp(1.8rem,4vw,2.4rem)">Calcula tu precio — Estudio Nails</h1>
+        <p class="section-subtitle">Tarifario 2026: acrílico por largo + decoraciones por par. Toca, ajusta y agenda con el precio cerrado.</p>
       </div>
 
-      <div class="calculator-steps" role="tablist" aria-label="Pasos">
-        <div class="step-indicator active" data-step="1"><span class="step-indicator-number">1</span> Técnica</div>
-        <div class="step-indicator" data-step="2"><span class="step-indicator-number">2</span> Color</div>
-        <div class="step-indicator" data-step="3"><span class="step-indicator-number">3</span> Largo</div>
-        <div class="step-indicator" data-step="4"><span class="step-indicator-number">4</span> Extras</div>
-      </div>
+      <div class="calc-layout">
+        <div>
+          <!-- Técnica -->
+          <section class="calc-card calc-step">
+            <div class="calc-step-title"><span>1</span> Técnica — elige una</div>
+            <div id="tech-grid" class="technique-grid"></div>
+            <p id="tech-hint" class="text-sm text-muted mt-3" style="display:none"></p>
+          </section>
 
-      <div id="step-1" class="calculator-step active">
-        <h3 class="text-lg font-semibold mb-4">1 · Elige la técnica base</h3>
-        <div id="tecnica-grid" class="option-grid"></div>
-      </div>
+          <!-- Largo -->
+          <section id="step-largo" class="calc-card calc-step">
+            <div class="calc-step-title"><span>2</span> Largo — acrílico con 1 tono liso</div>
+            <div class="length-preview">
+              <div class="length-name" id="length-name">Mini — ras del dedo</div>
+              <div class="length-visual" id="length-visual"></div>
+              <div class="length-price" id="length-price">$240</div>
+              <div class="text-sm text-muted">desliza o toca un número</div>
+              <input type="range" id="length-range" min="0" max="11" value="0" aria-label="Largo">
+              <div class="length-range"><span>Mini</span><span>11 · XXL</span></div>
+              <div id="length-chips" class="length-chips"></div>
+            </div>
+            <p class="text-sm text-muted mt-3">Precios base 2026: Mini $240 → Largo 11 $620. Incluye 1 tono liso.</p>
+          </section>
 
-      <div id="step-2" class="calculator-step">
-        <h3 class="text-lg font-semibold mb-2">2 · Elige el color</h3>
-        <p class="text-muted text-sm mb-6">Selector firma Apple — círculo grande de preview + fila de puntos. Toca un color.</p>
-        <div class="color-picker">
-          <div id="color-preview" class="color-picker-preview" style="background:#9B2542"></div>
-          <div id="color-swatches" class="color-picker-swatches"></div>
-          <div class="color-picker-info">
-            <div id="color-name" class="color-picker-name">Rojo Laca</div>
-            <div id="color-price" class="color-picker-price">+$0</div>
+          <section id="step-consulta" class="calc-card calc-step" style="display:none">
+            <div class="calc-step-title"><span>2</span> Precio a consultar</div>
+            <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:var(--radius-lg);padding:var(--space-4)">
+              <div style="font-weight:600">✨ <span id="consulta-name"></span></div>
+              <p class="text-sm text-muted">Este servicio no tiene tarifa por largo. Añade decoraciones abajo y agenda — confirmamos el precio por WhatsApp.</p>
+            </div>
+          </section>
+
+          <!-- Decoraciones -->
+          <section class="calc-card calc-step">
+            <div class="calc-step-title"><span>3</span> Decoraciones <span style="background:var(--color-bg-secondary);color:var(--color-text-secondary);font-weight:500;text-transform:none;letter-spacing:0;padding:2px 8px;border-radius:var(--radius-pill)">por par</span></div>
+            <p class="text-sm text-muted" style="margin-bottom:var(--space-4)">Toca para añadir. Ajusta cantidad con +/−. Se cobra por par (2 uñas).</p>
+            <div id="deco-grid" class="deco-grid"></div>
+          </section>
+
+          <!-- Extras -->
+          <section class="calc-card calc-step">
+            <div class="calc-step-title"><span>4</span> Extras y servicios</div>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) 0;border-bottom:1px solid var(--color-border);margin-bottom:var(--space-4)">
+              <div>
+                <div style="font-weight:600">Tono extra</div>
+                <div class="text-sm text-muted">+$5 por unidad</div>
+              </div>
+              <div class="counter">
+                <button class="counter-btn" id="tone-minus" aria-label="Menos">−</button>
+                <span class="counter-val" id="tone-val">0</span>
+                <button class="counter-btn" id="tone-plus" aria-label="Más">+</button>
+              </div>
+            </div>
+
+            <div style="font-weight:600;margin-bottom:var(--space-2)">Servicios adicionales</div>
+            <div id="services-list"></div>
+
+            <div style="font-weight:600;margin:var(--space-4) 0 var(--space-2)">Reposiciones</div>
+            <p class="text-sm text-muted" style="margin-bottom:var(--space-3)">Si se te cayó alguna uña, añade reposición por tamaño.</p>
+            <div id="replacements-list" style="display:flex;flex-direction:column;gap:var(--space-2)"></div>
+          </section>
+        </div>
+
+        <!-- Resumen sticky -->
+        <aside class="summary" aria-live="polite">
+          <div class="summary-head">
+            <div class="text-sm text-muted" style="text-transform:uppercase;letter-spacing:0.06em;font-weight:600">Total estimado</div>
+            <div class="summary-total" id="total-price">$240</div>
+            <div class="text-sm text-muted" id="summary-subtitle">Acrílico · Mini</div>
+            <div id="summary-badge" class="badge badge-accent mt-2" style="display:inline-flex">1 tono incluido</div>
           </div>
-        </div>
-        <div class="flex justify-between mt-8">
-          <button class="btn btn-secondary" data-prev="1">← Atrás</button>
-          <button class="btn btn-primary" data-next="3">Continuar →</button>
-        </div>
-      </div>
-
-      <div id="step-3" class="calculator-step">
-        <h3 class="text-lg font-semibold mb-4">3 · Largo de uña</h3>
-        <div id="largo-grid" class="option-grid"></div>
-        <div class="flex justify-between mt-8">
-          <button class="btn btn-secondary" data-prev="2">← Atrás</button>
-          <button class="btn btn-primary" data-next="4">Continuar →</button>
-        </div>
-      </div>
-
-      <div id="step-4" class="calculator-step">
-        <h3 class="text-lg font-semibold mb-2">4 · Extras (opcional, multi-selección)</h3>
-        <div id="extras-grid" class="option-grid"></div>
-        <div class="flex justify-between mt-8">
-          <button class="btn btn-secondary" data-prev="3">← Atrás</button>
-          <button id="btn-agendar" class="btn btn-accent btn-lg" disabled>Agendar con este precio →</button>
-        </div>
-        <p id="calc-hint" class="text-sm text-muted mt-3">Completa técnica, color y largo para agendar.</p>
-      </div>
-
-      <div class="calculator-summary">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-4)">
-          <h4 class="font-semibold">Resumen</h4>
-          <span id="summary-status" class="badge">Incompleto</span>
-        </div>
-        <div id="summary-rows"></div>
-        <div class="flex gap-3 mt-6">
-          <button id="btn-reset" class="btn btn-ghost">Limpiar</button>
-          <button id="btn-agendar-2" class="btn btn-primary" style="margin-left:auto" disabled>Agendar con este precio</button>
-        </div>
+          <div class="summary-lines" id="summary-lines"></div>
+          <div class="summary-cta">
+            <button id="btn-agendar" class="btn btn-primary btn-lg w-full">Agendar con este precio →</button>
+            <button id="btn-clear" class="btn btn-ghost w-full">Limpiar calculadora</button>
+            <p class="text-sm text-muted" style="text-align:center">Se guarda y se precarga en la agenda. Confirmación por WhatsApp.</p>
+          </div>
+        </aside>
       </div>
     </div>
   </main>
@@ -96,206 +188,265 @@
   <script type="module">
     import { initNav } from './js/components/nav.js';
     import { renderFooter } from './js/components/footer.js';
-    import { fetchMaterials } from './js/data.js';
-    import { formatPrice, saveCalcSelection, loadCalcSelection } from './js/utils.js';
+    import { TECHNIQUES, LENGTHS, DECORATIONS, EXTRA_TONE, ADDITIONAL_SERVICES, REPLACEMENTS, calcAcrilicoTotal } from './js/business.js';
+    import { formatPrice, saveCalcSelection } from './js/utils.js';
     import { toast } from './js/components/toast.js';
 
     initNav('calculadora');
     renderFooter();
+    document.querySelector('.nav-logo').innerHTML = 'Nails<span>.</span> Studio';
 
-    const materials = await fetchMaterials();
-    const byCat = (c) => materials.filter(m=>m.categoria===c);
+    // state
+    let technique = TECHNIQUES[0];
+    let lengthId = LENGTHS[0].id;
+    let decorations = []; // {id, qty}
+    let toneCount = 0;
+    let services = [];
+    let replacements = []; // {id, qty}
 
-    const state = {
-      tecnica: null,
-      color: null,
-      largo: null,
-      extras: [],
-    };
+    const techGrid = document.getElementById('tech-grid');
+    const techHint = document.getElementById('tech-hint');
+    const stepLargo = document.getElementById('step-largo');
+    const stepConsulta = document.getElementById('step-consulta');
+    const consultaName = document.getElementById('consulta-name');
 
-    // precarga desde catálogo
-    const pre = loadCalcSelection();
-    if (pre) {
-      const t = byCat('tecnica').find(x=>x.nombre===pre.tecnica);
-      const col = byCat('color').find(x=>x.nombre===pre.color);
-      if (t) state.tecnica = t;
-      if (col) state.color = col;
-    }
-
-    // --- render técnicas ---
-    const tecnicaGrid = document.getElementById('tecnica-grid');
-    tecnicaGrid.innerHTML = byCat('tecnica').map(m=>`
-      <div class="option-card ${state.tecnica?.id===m.id?'selected':''}" data-id="${m.id}" tabindex="0" role="button" aria-pressed="${state.tecnica?.id===m.id}">
-        <div style="width:100%;height:100%;display:grid;place-items:center;background:var(--color-bg-secondary);font-weight:600">${m.nombre}</div>
-        <div class="option-card-label">${formatPrice(m.precio_base)}</div>
-      </div>
-    `).join('');
-    tecnicaGrid.querySelectorAll('.option-card').forEach(card=>{
-      const sel = ()=> {
-        state.tecnica = materials.find(x=>x.id===card.dataset.id);
-        tecnicaGrid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
-        card.classList.add('selected');
-        update();
-        goTo(2);
-      };
-      card.addEventListener('click', sel);
-      card.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); sel(); }});
-    });
-
-    // --- colores (signature picker) ---
-    const colors = byCat('color');
-    if (!state.color) state.color = colors[0];
-    const swatches = document.getElementById('color-swatches');
-    const preview = document.getElementById('color-preview');
-    const cName = document.getElementById('color-name');
-    const cPrice = document.getElementById('color-price');
-    function renderColors(){
-      swatches.innerHTML = colors.map(c=>`
-        <button class="color-swatch ${state.color?.id===c.id?'selected':''}" data-id="${c.id}" aria-label="${c.nombre}" style="background:${c.color_hex || '#ddd'}" title="${c.nombre}"></button>
-      `).join('');
-      preview.style.background = state.color?.color_hex || '#F5F5F7';
-      cName.textContent = state.color?.nombre || '—';
-      cPrice.textContent = state.color ? (state.color.precio_base>0?`+${formatPrice(state.color.precio_base)}`:'+$0') : '';
-      swatches.querySelectorAll('.color-swatch').forEach(b=>{
-        b.addEventListener('click', ()=>{
-          state.color = materials.find(x=>x.id===b.dataset.id);
-          renderColors(); update();
-        });
-      });
-    }
-    renderColors();
-
-    // --- largo ---
-    const largoGrid = document.getElementById('largo-grid');
-    function renderLargo(){
-      largoGrid.innerHTML = byCat('largo').map(m=>`
-        <div class="option-card ${state.largo?.id===m.id?'selected':''}" data-id="${m.id}" tabindex="0" role="button" aria-pressed="${state.largo?.id===m.id}">
-          <div style="width:100%;height:100%;display:grid;place-items:center;background:var(--color-bg-secondary);">
-            <span style="font-size:2rem">${m.nombre==='Cortas'?'▁':m.nombre==='Medianas'?'▃':m.nombre==='Largas'?'▅':'▇'}</span>
-          </div>
-          <div class="option-card-label">${m.nombre} · ${formatPrice(m.precio_base)}</div>
+    function renderTech(){
+      techGrid.innerHTML = TECHNIQUES.map(t=>`
+        <div class="tech-card ${technique.id===t.id?'selected':''} ${t.pricing_type==='unknown'?'unknown':''}" data-id="${t.id}" role="button" tabindex="0" aria-pressed="${technique.id===t.id}">
+          <div class="tech-card-icon">${t.icon}</div>
+          <div class="tech-card-name">${t.name}</div>
+          ${t.description?`<div class="tech-card-desc">${t.description}</div>`:''}
+          <span class="tech-card-badge">${t.pricing_type==='length'?'desde $240':'consulta'}</span>
         </div>
       `).join('');
-      largoGrid.querySelectorAll('.option-card').forEach(card=>{
-        card.addEventListener('click', ()=>{
-          state.largo = materials.find(x=>x.id===card.dataset.id);
-          largoGrid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
-          card.classList.add('selected');
-          update(); goTo(4);
+      techGrid.querySelectorAll('.tech-card').forEach(el=>{
+        const go = ()=>{ technique = TECHNIQUES.find(x=>x.id===el.dataset.id); renderTech(); updateTechniqueUI(); updateSummary(); };
+        el.addEventListener('click', go);
+        el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); }});
+      });
+    }
+
+    function updateTechniqueUI(){
+      const isAcrilico = technique.id==='acrilico';
+      stepLargo.style.display = isAcrilico ? 'block' : 'none';
+      stepConsulta.style.display = isAcrilico ? 'none' : 'block';
+      consultaName.textContent = technique.name;
+      techHint.style.display = isAcrilico ? 'none' : 'block';
+      techHint.textContent = 'Para '+technique.name+' el precio se confirma por WhatsApp. Puedes añadir decoraciones y servicios.';
+    }
+
+    // largo
+    const lengthRange = document.getElementById('length-range');
+    const lengthNameEl = document.getElementById('length-name');
+    const lengthPriceEl = document.getElementById('length-price');
+    const lengthVisual = document.getElementById('length-visual');
+    const lengthChips = document.getElementById('length-chips');
+
+    function renderLengthChips(){
+      lengthChips.innerHTML = LENGTHS.map(l=>`
+        <button class="length-chip ${l.id===lengthId?'active':''}" data-id="${l.id}">${l.name==='Mini'?'Mini':l.name.replace('largo_','') } · ${formatPrice(l.price)}</button>
+      `).join('');
+      lengthChips.querySelectorAll('.length-chip').forEach(b=>{
+        b.addEventListener('click', ()=>{ lengthId=b.dataset.id; lengthRange.value=LENGTHS.findIndex(x=>x.id===lengthId); renderLength(); updateSummary(); });
+      });
+    }
+    function renderLength(){
+      const idx = LENGTHS.findIndex(x=>x.id===lengthId);
+      const cur = LENGTHS.find(x=>x.id===lengthId);
+      lengthRange.value = idx;
+      lengthNameEl.textContent = `${cur.name} ${cur.sub? '— '+cur.sub : ''}`;
+      lengthPriceEl.textContent = formatPrice(cur.price);
+      // visual bars: height grows with idx
+      lengthVisual.innerHTML = Array.from({length:10}, (_,i)=>{
+        const h = 14 + (idx/11)*56 + Math.sin(i)*4;
+        const active = i < Math.ceil((idx+1)/1.2);
+        return `<div class="length-bar" style="height:${h}px; opacity:${active?1:0.18}"></div>`;
+      }).join('');
+      lengthChips.querySelectorAll('.length-chip').forEach(b=> b.classList.toggle('active', b.dataset.id===lengthId));
+    }
+    lengthRange.addEventListener('input', ()=>{
+      const idx = Number(lengthRange.value);
+      lengthId = LENGTHS[idx].id;
+      renderLength(); updateSummary();
+    });
+
+    // decoraciones
+    const decoGrid = document.getElementById('deco-grid');
+    function renderDeco(){
+      decoGrid.innerHTML = DECORATIONS.map(d=>{
+        const sel = decorations.find(x=>x.id===d.id);
+        const qty = sel?.qty || 1;
+        return `
+          <div class="deco-card ${sel?'selected':''}" data-id="${d.id}" role="button" tabindex="0" aria-pressed="${!!sel}">
+            <div class="deco-card-head">
+              <div class="deco-name">${d.name}</div>
+              <div class="deco-price">+${formatPrice(d.price)}</div>
+            </div>
+            <div class="deco-unit">${d.unit}${d.hint? ' · '+d.hint : ''}</div>
+            <div class="deco-qty">
+              <button class="qty-btn" data-minus="${d.id}" aria-label="Menos">−</button>
+              <span class="qty-val">${qty}</span>
+              <button class="qty-btn" data-plus="${d.id}" aria-label="Más">+</button>
+              <span class="text-sm text-muted" style="margin-left:auto">${qty>1? formatPrice(d.price*qty) : ''}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+      decoGrid.querySelectorAll('.deco-card').forEach(card=>{
+        card.addEventListener('click', (e)=>{
+          if(e.target.closest('.qty-btn')) return;
+          const id=card.dataset.id;
+          const idx=decorations.findIndex(x=>x.id===id);
+          if(idx>=0) decorations.splice(idx,1);
+          else decorations.push({id, qty:1});
+          renderDeco(); updateSummary();
+        });
+      });
+      decoGrid.querySelectorAll('[data-plus]').forEach(b=>{
+        b.addEventListener('click', e=>{
+          e.stopPropagation();
+          const it=decorations.find(x=>x.id===b.dataset.plus);
+          if(it){ it.qty++; renderDeco(); updateSummary(); }
+        });
+      });
+      decoGrid.querySelectorAll('[data-minus]').forEach(b=>{
+        b.addEventListener('click', e=>{
+          e.stopPropagation();
+          const it=decorations.find(x=>x.id===b.dataset.minus);
+          if(!it) return;
+          it.qty--;
+          if(it.qty<=0) decorations=decorations.filter(x=>x.id!==b.dataset.minus);
+          renderDeco(); updateSummary();
         });
       });
     }
-    renderLargo();
-    if (state.tecnica && state.color) setTimeout(()=>goTo(2),0);
 
-    // --- extras ---
-    const extrasGrid = document.getElementById('extras-grid');
-    extrasGrid.innerHTML = byCat('extra').map(m=>`
-      <div class="option-card ${state.extras.find(x=>x.id===m.id)?'selected':''}" data-id="${m.id}" tabindex="0" role="button" aria-pressed="${!!state.extras.find(x=>x.id===m.id)}">
-        <div style="width:100%;height:100%;display:grid;place-items:center;background:var(--color-bg-secondary);font-weight:500">${m.nombre}</div>
-        <div class="option-card-label">+${formatPrice(m.precio_base)}</div>
-      </div>
-    `).join('');
-    extrasGrid.querySelectorAll('.option-card').forEach(card=>{
-      card.addEventListener('click', ()=>{
-        const m = materials.find(x=>x.id===card.dataset.id);
-        const idx = state.extras.findIndex(x=>x.id===m.id);
-        if (idx>=0) { state.extras.splice(idx,1); card.classList.remove('selected'); }
-        else { state.extras.push(m); card.classList.add('selected'); }
-        update();
+    // servicios adicionales
+    const servicesList = document.getElementById('services-list');
+    function renderServices(){
+      servicesList.innerHTML = ADDITIONAL_SERVICES.map(s=>{
+        const active=services.includes(s.id);
+        return `
+          <div class="extra-row ${active?'active':''} ${s.price<0?'negative':''}" data-id="${s.id}" role="button" tabindex="0" aria-pressed="${active}">
+            <div>
+              <div style="font-weight:600;display:flex;align-items:center;gap:var(--space-2)">${s.name} ${s.price<0?'<span class="badge" style="background:#0a7a42;color:#fff">−$30</span>':''}</div>
+              ${s.hint?`<div class="text-sm text-muted">${s.hint}</div>`:''}
+            </div>
+            <div style="display:flex;align-items:center;gap:var(--space-3)">
+              <span style="font-family:var(--font-mono);font-weight:600;color:${s.price<0?'#0a7a42':'var(--color-accent)'}">${s.price>0?'+':''}${formatPrice(s.price)}</span>
+              <div class="extra-row-check">${active?'✓':''}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      servicesList.querySelectorAll('.extra-row').forEach(el=>{
+        el.addEventListener('click', ()=>{
+          const id=el.dataset.id;
+          const idx=services.indexOf(id);
+          if(idx>=0) services.splice(idx,1); else services.push(id);
+          renderServices(); updateSummary();
+        });
       });
-    });
+    }
 
-    // --- navigation ---
-    function goTo(n){
-      document.querySelectorAll('.calculator-step').forEach(s=>s.classList.remove('active'));
-      document.getElementById(`step-${n}`).classList.add('active');
-      document.querySelectorAll('.step-indicator').forEach(s=>{
-        const sn = Number(s.dataset.step);
-        s.classList.toggle('active', sn===n);
-        s.classList.toggle('completed', sn<n);
+    // reposiciones
+    const repList = document.getElementById('replacements-list');
+    function renderReplacements(){
+      repList.innerHTML = REPLACEMENTS.map(r=>{
+        const sel=replacements.find(x=>x.id===r.id);
+        const qty=sel?.qty||0;
+        const active=qty>0;
+        return `
+          <div class="extra-row ${active?'active':''}" style="cursor:default">
+            <div>
+              <div style="font-weight:600">${r.name}</div>
+              <div class="text-sm text-muted">${r.range} · +${formatPrice(r.price)} c/u</div>
+            </div>
+            <div class="counter">
+              <button class="counter-btn" data-rminus="${r.id}" aria-label="Menos">−</button>
+              <span class="counter-val">${qty}</span>
+              <button class="counter-btn" data-rplus="${r.id}" aria-label="Más">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      repList.querySelectorAll('[data-rplus]').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const id=b.dataset.rplus;
+          let it=replacements.find(x=>x.id===id);
+          if(!it){ replacements.push({id, qty:1}); } else it.qty++;
+          renderReplacements(); updateSummary();
+        });
       });
-      window.scrollTo({ top: 0, behavior:'smooth' });
+      repList.querySelectorAll('[data-rminus]').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const it=replacements.find(x=>x.id===b.dataset.rminus);
+          if(!it) return;
+          it.qty--; if(it.qty<=0) replacements=replacements.filter(x=>x.id!==b.dataset.rminus);
+          renderReplacements(); updateSummary();
+        });
+      });
     }
-    document.querySelectorAll('[data-next]').forEach(b=> b.addEventListener('click', ()=> goTo(Number(b.dataset.next))));
-    document.querySelectorAll('[data-prev]').forEach(b=> b.addEventListener('click', ()=> goTo(Number(b.dataset.prev))));
 
-    // --- summary & validation ---
-    const summaryRows = document.getElementById('summary-rows');
-    const summaryStatus = document.getElementById('summary-status');
-    const btnAgendar = document.getElementById('btn-agendar');
-    const btnAgendar2 = document.getElementById('btn-agendar-2');
-    const hint = document.getElementById('calc-hint');
+    // tono extra
+    document.getElementById('tone-plus').addEventListener('click', ()=>{ toneCount++; document.getElementById('tone-val').textContent=toneCount; updateSummary(); });
+    document.getElementById('tone-minus').addEventListener('click', ()=>{ toneCount=Math.max(0,toneCount-1); document.getElementById('tone-val').textContent=toneCount; updateSummary(); });
 
-    function calcTotal(){
-      let total = 0;
-      if (state.tecnica) total += state.tecnica.precio_base;
-      if (state.color) total += state.color.precio_base;
-      if (state.largo) total += state.largo.precio_base;
-      state.extras.forEach(e=> total+= e.precio_base);
-      return total;
-    }
-    function isComplete(){ return !!(state.tecnica && state.color && state.largo); }
-
-    function update(){
-      const total = calcTotal();
-      const rows = [];
-      if (state.tecnica) rows.push(['Técnica', `${state.tecnica.nombre}`, formatPrice(state.tecnica.precio_base)]);
-      if (state.color) rows.push(['Color', state.color.nombre, formatPrice(state.color.precio_base)]);
-      if (state.largo) rows.push(['Largo', state.largo.nombre, formatPrice(state.largo.precio_base)]);
-      state.extras.forEach(e=> rows.push(['Extra', e.nombre, formatPrice(e.precio_base)]));
-      if (!rows.length) {
-        summaryRows.innerHTML = `<p class="text-sm text-muted">Selecciona técnica, color y largo para ver el precio.</p>`;
+    function updateSummary(){
+      const isAcrilico = technique.id==='acrilico';
+      let total=0, breakdown=[], base=0, subtitle='';
+      if(isAcrilico){
+        const res=calcAcrilicoTotal({ lengthId, decorations, toneCount, services, replacements });
+        total=res.total; breakdown=res.breakdown; base=res.base;
+        subtitle=`Acrílico · ${LENGTHS.find(l=>l.id===lengthId)?.name}`;
       } else {
-        summaryRows.innerHTML = rows.map(([k,v,p])=>`
-          <div class="calculator-summary-row"><span>${k} · ${v}</span><span style="font-family:var(--font-mono)">${p}</span></div>
-        `).join('') + `<div class="calculator-summary-row"><span>Total</span><span class="calculator-summary-total" style="font-family:var(--font-mono)">${formatPrice(total)}</span></div>`;
+        // para técnicas sin precio base, solo suma decoraciones/extras
+        const res=calcAcrilicoTotal({ lengthId: null, decorations, toneCount, services, replacements });
+        total=res.total; breakdown=res.breakdown;
+        subtitle=technique.name + ' · a consultar';
+        if(!total) breakdown=[{label:'Base a consultar', value:0}];
       }
-      const complete = isComplete();
-      summaryStatus.textContent = complete ? 'Listo para agendar' : 'Incompleto';
-      summaryStatus.style.background = complete ? '#D1FADF' : 'var(--color-bg-secondary)';
-      summaryStatus.style.color = complete ? '#006E2E' : 'var(--color-text-secondary)';
-      btnAgendar.disabled = !complete;
-      btnAgendar2.disabled = !complete;
-      hint.textContent = complete ? '¡Todo listo! Agenda con este precio y elige día/hora.' : 'Completa técnica, color y largo para agendar.';
-      renderColors();
+      document.getElementById('total-price').textContent = total? formatPrice(total) : 'A consultar';
+      document.getElementById('summary-subtitle').textContent = subtitle;
+      const linesEl=document.getElementById('summary-lines');
+      if(!breakdown.length){
+        linesEl.innerHTML='<p class="text-sm text-muted">Añade largo o decoraciones para ver el desglose.</p>';
+      } else {
+        linesEl.innerHTML=breakdown.map(b=>`
+          <div class="summary-line ${b.value<0?'negative':''}"><span>${b.label}</span><span style="font-family:var(--font-mono);font-weight:600">${b.value<0?'-':'+'}${formatPrice(Math.abs(b.value))}</span></div>
+        `).join('') + `<div class="summary-line" style="font-weight:700;border-top:1px solid var(--color-border);margin-top:var(--space-2);padding-top:var(--space-3)"><span>Total</span><span style="font-family:var(--font-mono)">${formatPrice(total)}</span></div>`;
+      }
     }
 
-    function buildServicioLabel(){
-      const parts = [];
-      if (state.tecnica) parts.push(state.tecnica.nombre);
-      if (state.color) parts.push(state.color.nombre);
-      if (state.largo) parts.push(state.largo.nombre);
-      if (state.extras.length) parts.push(state.extras.map(e=>e.nombre).join(', '));
-      return parts.join(' · ');
-    }
-
-    function handleAgendar(){
-      if (!isComplete()) { toast('Completa técnica, color y largo antes de agendar.', 'warning'); return; }
+    // actions
+    document.getElementById('btn-agendar').addEventListener('click', ()=>{
+      const isAcrilico=technique.id==='acrilico';
+      const res= isAcrilico ? calcAcrilicoTotal({ lengthId, decorations, toneCount, services, replacements }) : calcAcrilicoTotal({ lengthId: null, decorations, toneCount, services, replacements });
+      const decorLabel = decorations.map(d=>`${DECORATIONS.find(x=>x.id===d.id)?.name}×${d.qty}`).join(', ');
+      const servicio = [technique.name, isAcrilico? LENGTHS.find(l=>l.id===lengthId)?.name : null, decorLabel].filter(Boolean).join(' · ') || technique.name;
       const payload = {
-        tecnica: state.tecnica.nombre,
-        color: state.color.nombre,
-        colorHex: state.color.color_hex,
-        largo: state.largo.nombre,
-        extras: state.extras.map(e=>e.nombre),
-        total: calcTotal(),
-        servicio: buildServicioLabel(),
+        tecnica: technique.name,
+        color: decorLabel || '—',
+        largo: isAcrilico? LENGTHS.find(l=>l.id===lengthId)?.name : '—',
+        extras: [...decorations.map(d=>d.id), ...services, ...replacements.map(r=>r.id), toneCount? `tono_extra×${toneCount}`:null].filter(Boolean),
+        total: res.total,
+        servicio,
+        breakdown: res.breakdown,
+        techniqueId: technique.id
       };
       saveCalcSelection(payload);
+      toast('Precio guardado — elige fecha y hora','success');
       location.href='agendar.html';
-    }
-    btnAgendar.addEventListener('click', handleAgendar);
-    btnAgendar2.addEventListener('click', handleAgendar);
-    document.getElementById('btn-reset').addEventListener('click', ()=>{
-      state.tecnica=null; state.color=colors[0]; state.largo=null; state.extras=[];
-      document.querySelectorAll('.option-card.selected').forEach(c=>c.classList.remove('selected'));
-      extrasGrid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
-      tecnicaGrid.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
-      goTo(1); update();
-      toast('Selección reiniciada','info');
+    });
+    document.getElementById('btn-clear').addEventListener('click', ()=>{
+      technique=TECHNIQUES[0]; lengthId=LENGTHS[0].id; decorations=[]; toneCount=0; services=[]; replacements=[];
+      document.getElementById('tone-val').textContent='0';
+      renderTech(); updateTechniqueUI(); renderLengthChips(); renderLength(); renderDeco(); renderServices(); renderReplacements(); updateSummary();
+      toast('Calculadora reiniciada','info');
     });
 
-    update();
+    // init
+    renderTech(); updateTechniqueUI(); renderLengthChips(); renderLength(); renderDeco(); renderServices(); renderReplacements(); updateSummary();
   </script>
 </body>
 </html>
