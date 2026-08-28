@@ -122,6 +122,7 @@
   <script type="module">
     import { initNav } from '/js/components/nav.js';
     import { renderFooter } from '/js/components/footer.js';
+    import { initMobile } from '/js/mobile.js';
     import { CONFIG } from '/js/config.js';
     import { fetchAppointments, fetchBlockedSlots, createAppointment } from '/js/data.js';
     import { formatPrice, formatDateLong, generateTimeSlots, buildWhatsAppLink, loadCalcSelection, clearCalcSelection } from '/js/utils.js';
@@ -129,6 +130,7 @@
 
     initNav('agendar');
     renderFooter();
+    initMobile();
 
     const calGrid = document.getElementById('cal-grid');
     const calTitle = document.getElementById('cal-title');

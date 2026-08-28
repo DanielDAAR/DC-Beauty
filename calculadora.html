@@ -195,12 +195,14 @@
   <script type="module">
     import { initNav } from '/js/components/nav.js';
     import { renderFooter } from '/js/components/footer.js';
+    import { initMobile } from '/js/mobile.js';
     import { TECHNIQUES, LENGTHS, DECORATIONS, EXTRA_TONE, ADDITIONAL_SERVICES, REPLACEMENTS, calcAcrilicoTotal } from '/js/business.js';
     import { formatPrice, saveCalcSelection } from '/js/utils.js';
     import { toast } from '/js/components/toast.js';
 
     initNav('calculadora');
     renderFooter();
+    initMobile();
     document.querySelector('.nav-logo').innerHTML = 'Nails<span>.</span> Studio';
 
     // state

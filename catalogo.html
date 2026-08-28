@@ -66,10 +66,12 @@
   <script type="module">
     import { initNav } from '/js/components/nav.js';
     import { renderFooter } from '/js/components/footer.js';
+    import { initMobile } from '/js/mobile.js';
     import { fetchCatalog } from '/js/data.js';
     import { formatPrice, saveCalcSelection } from '/js/utils.js';
     initNav('catalogo');
     renderFooter();
+    initMobile();
 
     const grid = document.getElementById('grid');
     const empty = document.getElementById('empty');

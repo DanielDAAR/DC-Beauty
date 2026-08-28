@@ -205,8 +205,10 @@
     import { renderFooter } from '/js/components/footer.js';
     import { fetchCatalog } from '/js/data.js';
     import { formatPrice, saveCalcSelection } from '/js/utils.js';
+    import { initMobile } from '/js/mobile.js';
     initNav('home');
     renderFooter();
+    initMobile();
     const grid = document.getElementById('home-catalog');
     const items = (await fetchCatalog()).slice(0,4);
     if (!items.length) {
